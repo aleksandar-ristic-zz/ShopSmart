@@ -1,4 +1,4 @@
-const Produt = require('../models/product')
+const Product = require('../models/product')
 
 // Create new product => /api/v1/product/new
 exports.newProduct = async (req, res, next) => {
