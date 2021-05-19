@@ -4,6 +4,7 @@ const ErrorHandler = require('../utils/errorHandler')
 const catchAsyncErrors = require('../middleware/catchAsyncErrors')
 const APIFeatures = require('../utils/apiFeatures')
 const sendToken = require('../utils/jwtToken')
+const sendEmail = require('../utils/sendEmail')
 
 // Register a user => /api/v1/register
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
@@ -72,7 +73,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   // Create reset password url
   const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/password/reset/${resetToken}`;
 
-  const message = `Your password reset token is \n\n ${resetToken}\n\n If you have not requested this email, then ignore it.`;
+  const message = `Your password reset token is \n\n ${resetUrl}\n\n If you have not requested this email, then ignore it.`;
 
   try {
     
