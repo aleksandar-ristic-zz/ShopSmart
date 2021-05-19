@@ -6,6 +6,8 @@ const APIFeatures = require('../utils/apiFeatures')
 const sendToken = require('../utils/jwtToken')
 const sendEmail = require('../utils/sendEmail')
 
+const crypto = require('crypto')
+
 // Register a user => /api/v1/register
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 
@@ -76,7 +78,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const message = `Your password reset token is \n\n ${resetUrl}\n\n If you have not requested this email, then ignore it.`;
 
   try {
-    
+
     await sendEmail({
       email: user.email,
       subject: 'ShopIt Password Recovery',
@@ -96,6 +98,85 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
     return next(new ErrorHandler(err.message, 500))
   }
+});
+
+// Reset Password =>  /api/v1/password/reset/:token
+exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
+
+  // Hash URL token
+  const resetPasswordToken = crypto.createHash('sha256')
+  .update(req.params.token).digest('hex');
+
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() }
+  });
+
+  if (!user) {
+    return next(new ErrorHandler('Password reset token is invalid or has been expired', 400))
+  }
+
+  if (req.body.password !== req.body.confirmPassword) {
+    return next(new ErrorHandler('Password does not match', 400));
+  }
+
+  // Setup new password
+  user.password = req.body.password;
+
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  await user.save();
+
+  sendToken(user, 200, res);
+});
+
+// Get currently logged in user details => /api/v1/me
+exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  res.status(200).json({
+    success: true,
+    user
+  })
+});
+
+// Update / change password => /api/v1/password/update
+exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
+
+  const user = await User.findById(req.user.id).select('+password');
+
+  // Check previous user password
+  const isMatched = await user.comparePassword(req.body.oldPassword)
+
+  if (!isMatched) {
+    return next(new ErrorHandler('Old password is incorrect', 400));
+  }
+
+  user.password = req.body.password;
+  await user.save();
+
+  sendToken(user, 200, res);
+});
+
+// Update user profile => /api/v1/me/update
+exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
+
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email
+  }
+
+  //! Update avatar 
+
+  const user = await User.findByIdAndUpdate(req.user.id, newUserData,{
+    runValidators: true,
+    useFindAndModify: false
+  });
+
+  res.status(200).json({
+    success: true,
+  })
 });
 
 // Logout user => /api/vi/logout
