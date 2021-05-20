@@ -242,7 +242,21 @@ exports.updateUser = catchAsyncErrors(async (req, res, next) => {
   })
 });
 
-// Update user profile => /api/v1/admin/user/:id
+// Delete user profile => /api/v1/admin/user/:id
 exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
-  console.log('oh no no no');
+  
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next (new ErrorHandler(`User is not found with: 
+    ${req.params}`));
+  }
+
+  //! Remove avatar from cloudinary
+
+  await user.remove();
+
+  res.status(200).json({
+    success: true
+  });
 });
