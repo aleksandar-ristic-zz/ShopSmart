@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("./catchAsyncErrors");
 
-// Checks if user is authenticated or nt
+// Checks if user is authenticated or not
 exports.isAuthUser = catchAsyncErrors( async (req, res, next) => {
 
   const { token } = req.cookies;
