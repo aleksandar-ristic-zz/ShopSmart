@@ -4,6 +4,8 @@ import {
   ALL_PRODUCTS_FAIL,
   CLEAR_ERRORS
 } from '../constants/productConstants'
+
+
 export default function productsReducer (
   state = { products: []}, action) {
 const { type, payload } = action;

@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node api/server.js",
-    "dev": "SET NODE_ENV=DEVELOPMENT& nodemon api/server",
-    "prod": "SET NODE_ENV=PRODUCTION& nodemon api/server",
+    "server": "nodemon api/server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "seeder": "node api/utils/seeder.js"
   },
   "author": "Aleksandar Ristić",
@@ -15,13 +16,14 @@
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
     "dotenv": "^9.0.2",
-    "mongoose": "^5.12.10",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.10",
     "nodemailer": "^6.6.0",
     "validator": "^13.6.0"
   },
   "devDependencies": {
+    "concurrently": "^6.1.0",
     "nodemon": "^2.0.7"
   }
 }
