@@ -1,7 +1,8 @@
 const Product = require('../models/product')
 const ErrorHandler = require('../utils/errorHandler')
 const catchAsyncErrors = require('../middleware/catchAsyncErrors')
-const APIFeatures = require('../utils/apiFeatures')
+const APIFeatures = require('../utils/apiFeatures');
+const product = require('../models/product');
 
 // Create new product => /api/v1/admin/product/new
 exports.newProduct = catchAsyncErrors( async (req, res, next) => {
@@ -97,7 +98,7 @@ exports.deleteProduct = catchAsyncErrors( async (req, res, next) => {
 
 //* Review routes
 
-// Create new revview => /api/v1/review
+// Create new review => /api/v1/review
 exports.createProductReview = catchAsyncErrors( async(req, res, next) => {
 
   const { rating, comment, productId } = req.body;
@@ -112,13 +113,12 @@ exports.createProductReview = catchAsyncErrors( async(req, res, next) => {
   const product = await Product.findById(productId);
 
   const isReviewed = product.reviews.find(
-    rev => rev.user.toString() === req.user._id.toString()
+    r => r.user.toString() === req.user._id.toString()
   );
 
   if (isReviewed) {
-
-    product.reviews.forEach(rev => {
-      if (review.user.toString() === req.user_id.toString()) {
+    product.reviews.forEach(review => {
+      if (review.user.toString() === req.user._id.toString()) {
         review.comment = comment;
         review.rating = rating;
       }
@@ -130,4 +130,50 @@ exports.createProductReview = catchAsyncErrors( async(req, res, next) => {
   }
 
   product.ratings = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length;
-})
+
+  await product.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    success: true
+  });
+});
+
+// Get product reviews => /api/v1/reviews
+exports.getProductAllReviews = catchAsyncErrors( async(req, res, next) => {
+
+  const product = await Product.findById(req.query.id);
+
+  res.status(200).json({
+    success: true,
+    reviews: product.reviews
+  });
+});
+
+// Delete product review => /api/v1/reviews
+exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
+
+  const product = await Product.findById(req.query.productId);
+
+  const reviews = product.reviews.filter(review => 
+    review._id.toString() !== req.query.id.toString());
+
+  const numOfReviews = reviews.length;
+
+  const ratings = product.reviews.reduce((acc, item) => 
+    item.rating + acc, 0) / reviews.length;
+
+  await Product.findByIdAndUpdate(req.query.productId, { 
+      reviews, 
+      ratings, 
+      numOfReviews
+    }, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false
+    }
+  )
+
+  res.status(200).json({
+    success: true,
+  })
+});
