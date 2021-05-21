@@ -49,7 +49,7 @@ const ProductDetails = ({ match }) => {
     <>
     {loading ? <Loader /> : (
       <>
-       <MetaData title={name}  />s
+       <MetaData title={name}  />
       <div className="row f-flex justify-content-around">
       <div className="col-12 col-lg-5 img-fluid" id="product_image">
         <Carousel pause='hover'>
