@@ -25,7 +25,7 @@ const Login = ({ history }) => {
 
     if(error) {
       alert.error(error);
-      dispatch(clearErrors);
+      dispatch(clearErrors());
     }
   }, [dispatch, alert, isAuth, error, history])
 

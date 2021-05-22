@@ -7,9 +7,17 @@ const sendToken = require('../utils/jwtToken')
 const sendEmail = require('../utils/sendEmail')
 
 const crypto = require('crypto')
+const cloudinary = require('cloudinary')
 
 // Register a user => /api/v1/register
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
+
+  const result = await cloudinary.v2.uploader.upload(
+    req.body.avatar, {
+      folder: 'shopSmart - avatar',
+      width: 150,
+      crop: "scale"
+    });
 
   const {name, email, password} = req.body;
 
@@ -18,8 +26,8 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     email,
     password,
     avatar: {
-      public_id: 'avatar/10462857_538075069672009_4999119384748835809_n_vbvixb',
-      url: 'https://res.cloudinary.com/ri10a/image/upload/v1621441934/avatar/10462857_538075069672009_4999119384748835809_n_vbvixb.jpg'
+      public_id: result.public_id,
+      url: result.secure_url
     }
   });
 
