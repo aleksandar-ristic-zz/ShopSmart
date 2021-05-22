@@ -24,7 +24,8 @@ const { type, payload } = action;
         loading: false,
         products: payload.products,
         productsCount: payload.productsCount,
-        resPerPage: payload.resPerPage
+        resPerPage: payload.resPerPage,
+        filteredProductsCount: payload.filteredProductsCount
       }
     case ALL_PRODUCTS_FAIL:
       return {

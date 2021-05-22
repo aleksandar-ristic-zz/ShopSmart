@@ -20,6 +20,23 @@ const Home = ({ match }) => {
   const keyword = match.params.keyword
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([1, 1000]);
+  const [category, setCategory] = useState('');
+  const [rating, setRating] = useState('')
+
+  const categories = [
+    'Electronics',
+    'Cameras',
+    'Laptops',
+    'Headphones',
+    'Food',
+    'Books',
+    'Clothes/Shoes',
+    'Beauty/Health',
+    'Sports',
+    'Outdoor',
+    'Home',
+    'Accessories'
+  ]
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -29,7 +46,8 @@ const Home = ({ match }) => {
     products, 
     error, 
     resPerPage,
-    productsCount
+    productsCount,
+    filteredProductsCount
   } = useSelector( state => state.products);
 
   useEffect(() => {
@@ -38,13 +56,33 @@ const Home = ({ match }) => {
     return alert.error(error);
     }
 
-    dispatch(getProducts(keyword, currentPage, price));
+    dispatch(getProducts(
+      keyword, 
+      currentPage, 
+      price, 
+      category,
+      rating
+      ));
 
-  }, [dispatch, alert, error, keyword, currentPage, price]);
+  }, [
+    dispatch, 
+    alert, 
+    error, 
+    keyword, 
+    currentPage, 
+    price, 
+    category,
+    rating
+  ]);
 
 
   const setCurrentPageNo = (pageNo) => {
     setCurrentPage(pageNo)
+  }
+
+  let count = productsCount;
+  if(keyword) {
+    count = filteredProductsCount;
   }
 
   return (
@@ -76,6 +114,25 @@ const Home = ({ match }) => {
                     value={price}
                     onChange={price => setPrice(price)}
                   />
+
+                  <hr className="my-5" />
+
+                  <div className="mt-5">
+                    <h4 className="mb-3">
+                      Categories
+                    </h4>
+
+                    <ul className="pl-0">
+                      {categories.map(cat => (
+                        <li 
+                          style={{cursor: 'pointer', listStyleType: 'none'}}
+                          onClick={() => setCategory(cat)}
+                        >
+                          { cat }
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
 
@@ -91,12 +148,13 @@ const Home = ({ match }) => {
               <Product key={product._id} product={product} col={3} />
             )))}
 
-              
+             
+
            </div>
          </section>
 
 
-    { resPerPage <= productsCount && (
+    { resPerPage <= count && (
        <div className="d-flex justify-content-center mt-5">
        <Pagination
          activePage={currentPage}
