@@ -4,13 +4,13 @@ import Pagination from 'react-js-pagination'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
+import Loader from './layout/Loader'
 import  MetaData from './layout/MetaData'
 import Product from './product/Product'
-import Loader from './layout/Loader'
 
+import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProducts } from '../actions/productActions'
-import { useAlert } from 'react-alert'
 
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range)

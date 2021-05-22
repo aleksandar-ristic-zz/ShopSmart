@@ -4,9 +4,12 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { productsReducer, productDetailsReducer }  from './reducers/productReducer'
 
+import { authReducer } from './reducers/userReducer'
+
 const reducer = combineReducers({
   products: productsReducer,
-  productDetails: productDetailsReducer
+  productDetails: productDetailsReducer,
+  auth: authReducer
 });
 
 let initialState = {}
