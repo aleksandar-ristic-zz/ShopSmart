@@ -1,4 +1,14 @@
 
+:root {
+  --color-orange: #fa9c23;
+  --color-orange-light: #febd69;
+  --color-ratings: #fdcc0d;
+  --color-ratings-out: #f8ce0b;
+  --color-blue: #00aaff;
+  --color-blue-light: #00d5ff;
+}
+
+
 html,
 body {
   font-family: 'Amazon Ember';
@@ -33,7 +43,7 @@ nav {
 }
 
 #search_btn {
-  background-color: #febd69;
+  background-color: var(--color-blue-light);
 }
 
 .input-group {
@@ -48,7 +58,7 @@ nav {
 
 #login_btn,
 #view_btn {
-  background-color: #febd69;
+  background-color: var(--color-blue);
   padding: 0.4rem 1.8rem;
   font-family: calibri;
 }
@@ -59,7 +69,7 @@ nav {
 }
 
 #cart_count {
-  background-color: #febd69;
+  background-color: var(--color-blue-light);
   padding: 0.2rem 0.5rem;
   border-radius: 0.2rem;
   color: black;
@@ -81,7 +91,7 @@ nav {
 }
 
 .card-title a:hover {
-  color: #fa9c23;
+  color: var(--color-blue);
   text-decoration: none;
 }
 
@@ -94,7 +104,7 @@ nav {
 }
 
 #view_btn {
-  background-color: #fa9c23;
+  background-color: var(--color-blue);
   color: white;
 }
 
@@ -163,7 +173,7 @@ footer {
 #cart_btn,
 #review_btn {
   border-radius: 2rem;
-  background-color: #fa9c23;
+  background-color: var(--color-blue);
   border: none;
   padding: 0.5rem 2rem;
 }
@@ -208,8 +218,8 @@ footer {
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid #fa9c23;
-  border-color: #fa9c23 transparent;
+  border: 6px solid var(--color-blue);
+  border-color: var(--color-blue) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {
@@ -241,22 +251,22 @@ footer {
 }
 
 #card_item_price {
-  color: #febd69;
+  color: var(--color-blue-light);
   font-weight: bold;
   font-size: 1.4rem;
 }
 
 #checkout_btn,
 .review-btn {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: var(--color-blue);
+  border-color: var(--color-blue);
   margin-top: 2rem;
   border-radius: 5rem;
 }
 
 #view_order_details {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: var(--color-blue);
+  border-color: var(--color-blue);
 }
 
 #order_summary {
@@ -308,8 +318,8 @@ footer {
 }
 
 .wrapper form .btn {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: var(--color-blue);
+  border-color: var(--color-blue);
   color: white;
   margin-top: 2.5rem;
 }
@@ -388,7 +398,7 @@ footer {
 }
 
 .active-step {
-  background: #fa9c23;
+  background: var(--color-blue);
   color: #fff;
 }
 
@@ -396,7 +406,7 @@ footer {
   float: left;
   width: 0;
   border-top: 20px solid transparent;
-  border-left: 15px solid #fa9c23;
+  border-left: 15px solid var(--color-blue);
   border-bottom: 20px solid transparent;
   margin-left: -1px;
 }
@@ -404,9 +414,9 @@ footer {
 .triangle2-active {
   width: 0;
   float: left;
-  border-top: 20px solid #fa9c23;
+  border-top: 20px solid var(--color-blue);
   border-left: 15px solid #fff;
-  border-bottom: 20px solid #fa9c23;
+  border-bottom: 20px solid var(--color-blue);
   margin-right: -1px;
 }
 
@@ -446,8 +456,8 @@ footer {
 }
 
 #edit_profile {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: var(--color-blue);
+  border-color: var(--color-blue);
 }
 
 /* Confirm Order */
@@ -458,8 +468,8 @@ footer {
 }
 
 .update-btn {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: var(--color-blue);
+  border-color: var(--color-blue);
   color: white;
 }
 
@@ -469,16 +479,16 @@ footer {
 
 /* Pagination */
 .page-item.active .page-link {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: var(--color-blue);
+  border-color: var(--color-blue);
 }
 
 .page-link {
-  color: #fa9c23;
+  color: var(--color-blue);
 }
 
 .page-link:hover {
-  color: #fa9c23;
+  color: var(--color-blue);
 }
 
 /* Admin Sidebar */
@@ -604,7 +614,7 @@ ul.CTAs a {
 }
 
 .orange {
-  color: #fa9c23;
+  color: var(--color-blue);
 }
 
 .yellow {
