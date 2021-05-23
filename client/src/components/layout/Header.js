@@ -1,8 +1,28 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { useAlert } from 'react-alert'
+
+import { FaCartArrowDown, FaUserEdit } from 'react-icons/fa'
+import { AiOutlineDashboard, AiOutlineGift } from 'react-icons/ai'
+import { BiExit } from 'react-icons/bi'
+
+import { logoutUser } from '../../actions/userActions'
 import Search from './Search'
 
 const Header = () => {
+
+  const alert = useAlert();
+  const dispatch = useDispatch();
+
+  const { user, loading } = useSelector(state => state.auth);
+
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+    alert.success('Logged out succesfully.')
+  }
+
   return (
     <>
        <nav className="navbar row">
@@ -20,10 +40,60 @@ const Header = () => {
       </div>
 
       <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
-        <Link to="/login" className="btn ml-4" id="login_btn">Login</Link>
 
-        <span id="cart" className="ml-3">Cart</span>
-        <span className="ml-1" id="cart_count">2</span>
+        {user ? (
+
+          <div className="ml-4 dropdown d-inline">
+            <Link to="#!" className="btn dropdown-toggle text-white"
+            type="button" id="dropDownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+            <figure className="avatar avatar-nav">
+              <img 
+              src={user.avatar && user.avatar.url} 
+              alt={user && user.name} 
+              className="rounded-circle"
+              />
+            </figure>
+              <span>{user && user.name}</span>
+            </Link>
+
+            <div
+            className="dropdown-menu" aria-labelledby="dropDownMenuButton"
+            >
+
+              {user && user.role !== 'admin' ? (
+                <Link to="/orders/me" className="dropdown-item d-flex align-items-center">
+                 <AiOutlineGift /> Orders
+                </Link>
+              ) : (
+                 <Link to="/dashboard" className="dropdown-item d-flex align-items-center">
+                 <AiOutlineDashboard /> Dashboard
+                </Link>
+              )}
+
+                <Link to="/me" className="dropdown-item d-flex align-items-center">
+                <FaUserEdit /> Profile
+                </Link>
+
+              <Link 
+                to="/" 
+                className="dropdown-item text-danger d-flex align-items-center"
+                onClick={logoutHandler}>
+                <BiExit /> Logout
+                </Link>
+
+            </div>
+
+          </div>
+
+        ) : !loading &&  <Link to="/login" className="btn ml-4" id="login_btn">Login</Link> }
+
+        <Link to="/cart" style={{ textDecoration: 'none' }}>
+          <span id="cart" className="ml-3"><FaCartArrowDown 
+          style={{fontSize: '30px'}} /></span>
+          <span className="ml-1" id="cart_count">2</span>
+        </Link>
+
       </div>
     </nav>
     </>
