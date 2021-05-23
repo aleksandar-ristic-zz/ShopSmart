@@ -10,7 +10,7 @@ import { UPDATE_PASSWORD_RESET } from '../../constants/userConstants'
 const UpdatePassword = ({ history }) => {
 
   const [oldPassword, setOldPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
+  const [password, setPassword] = useState('')
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const UpdatePassword = ({ history }) => {
     }
 
     if(isUpdated) {
-      alert.success('Password Updated Successfully');
+      alert.success('Password updated successfully');
 
       history.push('/me');
 
@@ -42,16 +42,18 @@ const UpdatePassword = ({ history }) => {
 
     const formData = new FormData();
     formData.set('oldPassword', oldPassword );
-    formData.set('newPassword', newPassword );
+    formData.set('password', password );
 
     dispatch(updatePassword(formData));
   }
 
   return (
     <>
+      <MetaData title={'Update Password'} />
+
       <div className="row wrapper">
             <div className="col-10 col-lg-5">
-                <form className="shadow-lg">
+                <form className="shadow-lg" onSubmit={submitHandler}>
                     <h1 className="mb-3">Update Password</h1>
 
                     <div className="form-group">
@@ -67,24 +69,23 @@ const UpdatePassword = ({ history }) => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="confirm_password_field">Confirm Password</label>
+                        <label htmlFor="confirm_password_field">New Password</label>
                         <input
                             type="password"
                             id="confirm_password_field"
                             className="form-control"
-                            value={newPassword}
+                            value={password}
                             onChange={(e) => 
-                              setNewPassword(e.target.value)}
+                              setPassword(e.target.value)}
                         />
                     </div>
 
                     <button
-                        id="new_password_button"
                         type="submit"
                         className="btn btn-block py-3"
                         disabled={ loading ? true : false }
                         >
-                        Set Password
+                        Update Password
                     </button>
 
                 </form>
