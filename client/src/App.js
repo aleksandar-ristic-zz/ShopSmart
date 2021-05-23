@@ -10,6 +10,8 @@ import ProductDetails from './components/product/ProductDetails'
 import Login from './components/user/Login'
 import Register from './components/user/Register'
 import Profile from './components/user/Profile'
+import UpdateProfile from './components/user/UpdateProfile'
+import UpdatePassword from './components/user/UpdatePassword'
 
 import ProtectedRoute from './components/route/ProtectedRoute'
 import { loadUser } from './actions/userActions'
@@ -33,6 +35,8 @@ function App() {
       <Route path="/register" component={Register} />
 
       <ProtectedRoute exact path="/me" component={Profile} />
+      <ProtectedRoute exact path="/me/update" component={UpdateProfile} />
+      <ProtectedRoute exact path="/password/update" component={UpdatePassword} />
       <Footer />
       </div>
     </>

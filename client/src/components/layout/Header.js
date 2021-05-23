@@ -44,7 +44,7 @@ const Header = () => {
         {user ? (
 
           <div className="ml-4 dropdown d-inline">
-            <Link to="#!" className="btn dropdown-toggle text-white"
+            <Link to="#!" className="btn dropdown-toggle text-white mr-4"
             type="button" id="dropDownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
             <figure className="avatar avatar-nav">
@@ -63,23 +63,23 @@ const Header = () => {
 
               {user && user.role !== 'admin' ? (
                 <Link to="/orders/me" className="dropdown-item d-flex align-items-center">
-                 <AiOutlineGift /> Orders
+                 <AiOutlineGift className="mr-1" /> Orders
                 </Link>
               ) : (
                  <Link to="/dashboard" className="dropdown-item d-flex align-items-center">
-                 <AiOutlineDashboard /> Dashboard
+                 <AiOutlineDashboard className="mr-1" /> Dashboard
                 </Link>
               )}
 
                 <Link to="/me" className="dropdown-item d-flex align-items-center">
-                <FaUserEdit /> Profile
+                <FaUserEdit className="mr-1" /> Profile
                 </Link>
 
               <Link 
                 to="/" 
                 className="dropdown-item text-danger d-flex align-items-center"
                 onClick={logoutHandler}>
-                <BiExit /> Logout
+                <BiExit className="mr-1" /> Logout
                 </Link>
 
             </div>
@@ -89,8 +89,7 @@ const Header = () => {
         ) : !loading &&  <Link to="/login" className="btn ml-4" id="login_btn">Login</Link> }
 
         <Link to="/cart" style={{ textDecoration: 'none' }}>
-          <span id="cart" className="ml-3"><FaCartArrowDown 
-          style={{fontSize: '30px'}} /></span>
+          <span id="cart" className="ml-3"><FaCartArrowDown /></span>
           <span className="ml-1" id="cart_count">2</span>
         </Link>
 

@@ -31,12 +31,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     }
   });
 
-  const token = user.getJwtToken();
-
-  res.status(201).json({
-    success: true,
-    token
-  })
+  sendToken(user, 200, res)
 });
 
 // Login user => /api/v1/login
@@ -175,7 +170,25 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     email: req.body.email
   }
 
-  //! Update avatar 
+  // Update avatar 
+  if (req.body.avatar !== '') {
+    const user = await User.findById(req.user.id)
+
+    const image_id = user.avatar.public_id;
+    await cloudinary.v2.uploader.destroy(image_id)
+
+    const result = await cloudinary.v2.uploader.upload(
+      req.body.avatar, {
+      folder: 'shopSmart - avatar',
+      width: 150,
+      crop: "scale"
+    });
+
+    newUserData.avatar = {
+      public_id: result.public_id,
+      url: result.secure_url
+    }
+  }
 
   await User.findByIdAndUpdate(req.user.id, newUserData,{
     new: true,
@@ -184,7 +197,7 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
   });
 
   res.status(200).json({
-    success: true,
+    success: true
   })
 });
 
