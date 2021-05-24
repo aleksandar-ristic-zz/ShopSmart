@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import Loader from '../layout/Loader'
-import  MetaData from '../layout/MetaData'
+import MetaData from '../layout/MetaData'
 
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, clearErrors } from '../../actions/userActions'
 
-const Login = ({ history }) => {
+const Login = ({ history, location }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,9 +18,11 @@ const Login = ({ history }) => {
 
   const { isAuth, error, loading } = useSelector(state => state.auth)
 
+  const redirect = location.search ? location.search.split('=')[1] : '/';
+
   useEffect(() => {
     if (isAuth) {
-      history.push('/');
+      history.push(redirect);
     }
 
     if(error) {

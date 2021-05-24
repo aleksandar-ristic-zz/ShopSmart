@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
+import { countries } from 'countries-list'
 
 import MetaData from '../layout/MetaData'
+import CheckoutSteps from './CheckoutSteps'
 
 import { useDispatch, useSelector } from 'react-redux'
-
 import { saveShippingInfo } from '../../actions/cartActions'
 
 const Shipping = ({ history }) => {
 
+  const countriesList = Object.values(countries);
+
   const { shippingInfo } = useSelector(state => state.cart);
 
-  const [address, setAddress] = useState(shippingInfo.adress);
+  const [address, setAddress] = useState(shippingInfo.address);
   const [city, setCity] = useState(shippingInfo.city);
   const [postalCode, setPostalCode] = useState(shippingInfo.postalCode);
   const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
@@ -29,17 +32,19 @@ const Shipping = ({ history }) => {
       country 
     }));
 
-    history.push('/confirm');
+    history.push('/order/confirm');
   }
 
   return (
     <>
     <MetaData title={'Shipping Info'} />
 
+    <CheckoutSteps shipping />
+
      <div className="row wrapper">
       <div className="col-10 col-lg-5">
 
-        <form className="shadow-lg">
+        <form className="shadow-lg" onSubmit={submitHandler}>
           <h1 className="mb-4">Shipping Info</h1>
 
           <div className="form-group">
@@ -99,9 +104,12 @@ const Shipping = ({ history }) => {
               onChange={(e) => setCountry(e.target.value)}
               required
             >
-              <option>
-                USA
-              </option>
+
+              {countriesList.map(country => (
+                <option key={country.name} value={country.name}
+                >{country.name}</option>
+              ))}
+              
 
             </select>
           </div>

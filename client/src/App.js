@@ -8,6 +8,8 @@ import Home from './components/Home'
 import ProductDetails from './components/product/ProductDetails'
 
 import Cart from './components/cart/Cart'
+import Shipping from './components/cart/Shipping'
+import ConfirmOrder from './components/cart/Shipping'
 
 import Login from './components/user/Login'
 import Register from './components/user/Register'
@@ -34,7 +36,10 @@ function App() {
       <Route exact path="/" component={Home} />
       <Route path="/search/:keyword" component={Home} />
       <Route exact path="/product/:id" component={ProductDetails} />
+
       <Route exact path="/cart" component={Cart} />
+      <ProtectedRoute path="/shipping" component={Shipping} />
+      <ProtectedRoute path="/order/confirm" component={ConfirmOrder} />
 
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
