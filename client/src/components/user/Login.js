@@ -25,11 +25,11 @@ const Login = ({ history, location }) => {
       history.push(redirect);
     }
 
-    if(error) {
+    if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, isAuth, error, history])
+  }, [dispatch, alert, isAuth, error, history, redirect])
 
   const submitHandler = e => {
     e.preventDefault();

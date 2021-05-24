@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Route } from 'react-router-dom'
 
 import Header from './components/layout/Header'
@@ -9,7 +9,7 @@ import ProductDetails from './components/product/ProductDetails'
 
 import Cart from './components/cart/Cart'
 import Shipping from './components/cart/Shipping'
-import ConfirmOrder from './components/cart/Shipping'
+import ConfirmOrder from './components/cart/ConfirmOrder'
 
 import Login from './components/user/Login'
 import Register from './components/user/Register'
@@ -23,10 +23,22 @@ import ProtectedRoute from './components/route/ProtectedRoute'
 import { loadUser } from './actions/userActions'
 import store from './store'
 
+import axios from 'axios'
+
 function App() {
+
+  const [stripeApiKey, setStripeApiKey] = useState('');
 
   useEffect(() => {
     store.dispatch(loadUser());
+
+    async function getStripeApiKey() {
+      const { data } = await axios.get('/api/v1/stripeapi');
+      setStripeApiKey(data.stripeApiKey);
+    }
+
+   getStripeApiKey();
+
   }, [])
 
   return (

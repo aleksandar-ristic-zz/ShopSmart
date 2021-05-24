@@ -27,6 +27,18 @@ const ConfirmOrder = ({ history }) => {
   const totalPrice = (itemPrice + shippingPrice + taxPrice)
   .toFixed(2);
 
+  const proceedToPayment = () => {
+    const data = {
+      itemPrice: itemPrice.toFixed(2),
+      shippingPrice,
+      taxPrice,
+      totalPrice
+    }
+
+    sessionStorage.setItem('orderInfo', JSON.stringify(data))
+    history.push('/');
+  }
+
   return (
     <>
       
@@ -62,7 +74,7 @@ const ConfirmOrder = ({ history }) => {
                     </div>
 
                     <div className="col-4 col-lg-4 mt-4 mt-lg-0">
-                      <p>{item.quantity} x {item.price} = <b>{item.qunatity * item.price}</b></p>
+                      <p>{item.quantity} x {item.price} = <b>{item.quantity * item.price} $</b></p>
                     </div>
 
                   </div>
@@ -92,7 +104,8 @@ const ConfirmOrder = ({ history }) => {
 
               <hr/>
 
-              <button id="checkout_btn" className="btn btn-primary btn-block">Proceed to Payment</button>
+              <button id="checkout_btn" className="btn btn-primary btn-block" onClick={proceedToPayment}
+                >Proceed to Payment</button>
             </div>
 
           </div>
