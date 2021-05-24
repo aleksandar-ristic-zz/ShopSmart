@@ -10,14 +10,20 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
-  LOGOUT_SUCCESS,
-  LOGOUT_FAIL,
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_SUCCESS,
   UPDATE_PROFILE_FAIL,
   UPDATE_PASSWORD_REQUEST,
   UPDATE_PASSWORD_SUCCESS,
   UPDATE_PASSWORD_FAIL,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAIL,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAIL,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
   CLEAR_ERRORS
 } from '../constants/userConstants'
 
@@ -148,6 +154,62 @@ export const updatePassword = (passwords) => async dispatch => {
   } catch(err) {
     dispatch({
       type: UPDATE_PASSWORD_FAIL,
+      payload: err.response.data.errorMessage
+    });
+  }
+}
+
+// Forgot Password
+export const forgotPassword= (email) => async dispatch => {
+  try {
+   
+    dispatch({ type: FORGOT_PASSWORD_REQUEST });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const { data } = await axios.post(
+      '/api/v1/password/forgot', email, config);
+
+    dispatch({
+      type: FORGOT_PASSWORD_SUCCESS,
+      payload: data.message
+    });
+
+  } catch(err) {
+    dispatch({
+      type: FORGOT_PASSWORD_FAIL,
+      payload: err.response.data.errorMessage
+    });
+  }
+}
+
+// Reset Password
+export const resetPassword= (token, passwords) => async dispatch => {
+  try {
+   
+    dispatch({ type: RESET_PASSWORD_REQUEST });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const { data } = await axios.put(
+      `/api/v1/password/reset/${token}`, passwords, config);
+
+    dispatch({
+      type: RESET_PASSWORD_SUCCESS,
+      payload: data.success
+    });
+
+  } catch(err) {
+    dispatch({
+      type: RESET_PASSWORD_FAIL,
       payload: err.response.data.errorMessage
     });
   }

@@ -8,8 +8,6 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
-  LOGOUT_SUCCESS,
-  LOGOUT_FAIL,
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_RESET,
   UPDATE_PROFILE_SUCCESS,
@@ -21,6 +19,11 @@ import {
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
   FORGOT_PASSWORD_FAIL,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAIL,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
   CLEAR_ERRORS
 } from '../constants/userConstants'
 
@@ -106,6 +109,45 @@ export const userReducer = (state= {}, action) => {
       }
     case UPDATE_PASSWORD_FAIL:
     case UPDATE_PROFILE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: payload
+      }
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null
+      }
+    default:
+      return state;
+  }
+}
+
+export const forgotPasswordReducer = (state= {}, action) => {
+  const { type, payload } = action;
+
+  switch(type) {
+    case RESET_PASSWORD_REQUEST:
+    case FORGOT_PASSWORD_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      }
+    case RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        success: payload
+      }
+    case FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: payload
+      }
+    case RESET_PASSWORD_FAIL:
+    case FORGOT_PASSWORD_FAIL:
       return {
         ...state,
         loading: false,
