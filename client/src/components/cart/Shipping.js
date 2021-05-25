@@ -60,7 +60,7 @@ const Shipping = ({ history }) => {
           </div>
 
           <div className="form-group">
-            <label hmtlFor="city_field">City</label>
+            <label htmlFor="city_field">City</label>
             <input
               type="text"
               id="city_field"
@@ -84,7 +84,7 @@ const Shipping = ({ history }) => {
           </div>
 
           <div className="form-group">
-            <label hmtlFor="postal_code_field">Postal Code</label>
+            <label htmlFor="postal_code_field">Postal Code</label>
             <input
               type="number"
               id="postal_code_field"
@@ -96,7 +96,7 @@ const Shipping = ({ history }) => {
           </div>
 
           <div className="form-group">
-            <label hmtlFor="country_field">Country</label>
+            <label htmlFor="country_field">Country</label>
             <select
               id="country_field"
               className="form-control"

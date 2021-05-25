@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
 import MetaData from '../layout/MetaData'
@@ -34,9 +34,8 @@ const ConfirmOrder = ({ history }) => {
       taxPrice,
       totalPrice
     }
-
     sessionStorage.setItem('orderInfo', JSON.stringify(data))
-    history.push('/');
+    history.push('/payment');
   }
 
   return (
@@ -44,7 +43,7 @@ const ConfirmOrder = ({ history }) => {
       
       <MetaData title={'Confirm Order'} />
 
-      <CheckoutSteps confirmOrder />
+      <CheckoutSteps shipping confirmOrder />
 
         <div className="row d-flex justify-content-between">
           <div className="col-12 col-lg-8 mt-5 order-confirm">
@@ -60,13 +59,13 @@ const ConfirmOrder = ({ history }) => {
             <h4 className="mt-4">My Cart Items:</h4>
 
             {cartItems.map(item => (
-              <>
+              <Fragment key={item.product}>
                 <hr/>
 
-                <div className="cart-item my-1" key={item.product}>
+                <div className="cart-item my-1" >
                   <div className="row">
                     <div className="col-4 col-lg-2">
-                      <img src={item.image} alt="Laptop" height="45" width="65" />
+                      <img src={item.image} alt={item.name} height="45" width="65" />
                     </div>
 
                     <div className="col-5 col-lg-6">
@@ -82,7 +81,7 @@ const ConfirmOrder = ({ history }) => {
             
                 <hr/>
 
-              </>
+              </Fragment>
             ))}
 
             

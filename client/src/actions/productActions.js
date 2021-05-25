@@ -23,7 +23,7 @@ export const getProducts = (
   try {
    
     dispatch({ type: ALL_PRODUCTS_REQUEST});
-    console.log(rating);
+    
     let link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`
 
     if (category) {
