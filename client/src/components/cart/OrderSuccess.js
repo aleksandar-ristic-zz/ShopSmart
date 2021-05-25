@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import MetaData from '../layout/MetaData'
 
-const OrderSuccces = () => {
+const OrderSuccess = () => {
   return (
     <>
       <MetaData title={'Order Success'} />
@@ -22,4 +22,4 @@ const OrderSuccces = () => {
   )
 }
 
-export default OrderSuccces
+export default OrderSuccess

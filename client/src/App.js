@@ -12,7 +12,10 @@ import Cart from './components/cart/Cart'
 import Shipping from './components/cart/Shipping'
 import ConfirmOrder from './components/cart/ConfirmOrder'
 import Payment from './components/cart/Payment'
-import OrderSuccess from './components/cart/OrderSuccces'
+import OrderSuccess from './components/cart/OrderSuccess'
+
+// Order Imports
+import ListOrders from './components/order/ListOrders'
 
 // Auth or User imports
 import Login from './components/user/Login'
@@ -31,7 +34,6 @@ import axios from 'axios'
 // Payment
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import OrderSuccces from './components/cart/OrderSuccces'
 
 function App() {
 
@@ -60,7 +62,7 @@ function App() {
       <Route exact path="/cart" component={Cart} />
       <ProtectedRoute path="/shipping" component={Shipping} />
       <ProtectedRoute path="/order/confirm" stripe={stripeApiKey} component={ConfirmOrder} />
-      <ProtectedRoute path="/success" component={OrderSuccces} />
+      <ProtectedRoute path="/success" component={OrderSuccess} />
       {stripeApiKey && 
         <Elements stripe={loadStripe(stripeApiKey)}>
           <ProtectedRoute path="/payment" component={Payment} />
@@ -75,6 +77,8 @@ function App() {
       <ProtectedRoute exact path="/me" component={Profile} />
       <ProtectedRoute exact path="/me/update" component={UpdateProfile} />
       <ProtectedRoute exact path="/password/update" component={UpdatePassword} />
+
+      <ProtectedRoute exact path="/orders/me" component={ListOrders} />
       
       <Footer />
       </div>
