@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Carousel } from 'react-bootstrap'
 
 import Loader from '../layout/Loader'
@@ -8,7 +9,8 @@ import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { 
   getProductDetails, 
-  clearErrors 
+  clearErrors,
+  newReview
 } from '../../actions/productActions'
 
 import { addItemToCart } from '../../actions/cartActions'
@@ -16,6 +18,8 @@ import { addItemToCart } from '../../actions/cartActions'
 const ProductDetails = ({ match }) => {
 
   const [quantity, setQuantity] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -37,6 +41,10 @@ const ProductDetails = ({ match }) => {
     } 
   } = useSelector(state => state.productDetails);
 
+  const { user } = useSelector(state => state.auth);
+  const { error: reviewError, success } = useSelector(state => 
+    state.newReview)
+ 
   useEffect(() => {
 
     dispatch(getProductDetails(match.params.id));
@@ -46,7 +54,16 @@ const ProductDetails = ({ match }) => {
       dispatch(clearErrors);
     }
 
-  }, [dispatch, alert, error, match.params.id]);
+    if(reviewError) {
+      alert.error(reviewError);
+      dispatch(clearErrors);
+    }
+
+    if (success) {
+      alert.success(success);
+    }
+
+  }, [dispatch, alert, error, match.params.id, reviewError, success])
 
   const addToCart = () => {
     dispatch(addItemToCart(match.params.id, quantity));
@@ -69,6 +86,52 @@ const ProductDetails = ({ match }) => {
 
     const qty = count.valueAsNumber-1;
     setQuantity(qty);
+  }
+
+  const setUserRatings= () => {
+    const stars = document.querySelectorAll('.star');
+
+    stars.forEach((star, index) => {
+      star.starValue = index + 1;
+
+      ['click', 'mouseover', 'mouseout'].forEach(function(e) {
+        star.addEventListener(e, showRatings);
+      })
+    });
+
+    function showRatings(e) {
+      stars.forEach((star, index) => {
+        if(e.type === 'click') {
+          if(index < this.starValue) {
+            star.classList.add('orange');
+
+            setRating(this.starValue);
+          } else {
+            star.classList.remove('orange');
+          }
+        }
+        if(e.type === 'mouseover') {
+          if(index < this.starValue) {
+            star.classList.add('yellow');
+          } else {
+            star.classList.remove('yellow');
+          }
+        }
+        if(e.type === 'mouseout') {
+          star.classList.remove('yellow');
+        }
+      });
+    }
+  }
+
+  const reviewHandler = () => {
+    const formData = new FormData();
+
+    formData.set('rating', rating);
+    formData.set('comment', comment);
+    formData.set('productId', match.params.id);
+
+    dispatch(newReview(formData));
   }
 
   return ( 
@@ -146,16 +209,27 @@ const ProductDetails = ({ match }) => {
       <p id="product_seller mb-3">
         Sold by: <strong>{seller}</strong>
       </p>
-				
-			<button 
+
+      {user ? <button 
         id="review_btn" 
         type="button" 
         className="btn btn-primary mt-4" 
         data-toggle="modal" 
-        data-target="#ratingModal">
+        data-target="#ratingModal"
+        onClick={setUserRatings}
+        >
         Submit Your Review
-      </button>
-
+      </button> : <div className="alert alert-danger mt-5">
+        <p class="muted">
+          Only logged in users can post reviews. <Link to="/login">Login Here</Link>
+        </p>
+        
+        <p class="muted">
+          Don't have an account ? <Link to="/register">Register Here</Link>
+        </p>
+        
+      </div> }
+				
       <div className="row mt-2 mb-5">
         <div className="rating w-50">
 

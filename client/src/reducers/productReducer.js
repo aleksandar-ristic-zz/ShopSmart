@@ -5,6 +5,10 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  NEW_REVIEW_REQUEST,
+  NEW_REVIEW_SUCCESS,
+  NEW_REVIEW_RESET,
+  NEW_REVIEW_FAIL,
   CLEAR_ERRORS
 } from '../constants/productConstants'
 
@@ -62,8 +66,44 @@ export const productDetailsReducer = (
          return {
            ...state,
            loading: false,
-           error: null
+           error: payload
          }
+      case CLEAR_ERRORS:
+          return {
+            ...state,
+            error: null
+          }
+      default:
+        return state
+    }
+}
+
+export const newReviewReducer = (
+  state = {product: {} }, action) => {
+    const { type, payload } = action;
+
+    switch(type) {
+      case NEW_REVIEW_REQUEST:
+        return {
+          ...state,
+          loading: true
+        }
+      case NEW_REVIEW_SUCCESS:
+       return {
+         loading: false,
+         product: payload
+       }
+      case NEW_REVIEW_FAIL:
+         return {
+           ...state,
+           loading: false,
+           error: payload
+         }
+      case NEW_REVIEW_RESET:
+        return {
+          ...state,
+          success: false
+        }
       case CLEAR_ERRORS:
           return {
             ...state,

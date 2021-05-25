@@ -16,6 +16,7 @@ import OrderSuccess from './components/cart/OrderSuccess'
 
 // Order Imports
 import ListOrders from './components/order/ListOrders'
+import OrderDetails from './components/order/OrderDetails'
 
 // Auth or User imports
 import Login from './components/user/Login'
@@ -79,6 +80,7 @@ function App() {
       <ProtectedRoute exact path="/password/update" component={UpdatePassword} />
 
       <ProtectedRoute exact path="/orders/me" component={ListOrders} />
+       <ProtectedRoute exact path="/order/:id" component={OrderDetails} />
       
       <Footer />
       </div>

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { MDBDataTable } from 'mdbreact'
 
@@ -72,8 +72,8 @@ const ListOrders = () => {
         actions:
           <Link 
           to={`/order/${order._id}`} 
-          className="btn btn-primary" >
-            <ImEye />
+          className="btn btn-primary d-inline-flex align-items-center" >
+            <ImEye className="mr-1" /> View Details
           </Link>
       })
     })
@@ -85,11 +85,11 @@ const ListOrders = () => {
     <>
       <MetaData title={'My Orders'} />
 
-      <h1 className="mt-5">My Orders</h1>
+      <h1 className="my-5">My Orders</h1>
 
       {loading ? <Loader /> : (
         <MDBDataTable 
-          data={setOrders}
+          data={setOrders()}
           className="px-3"
           bordered
           striped

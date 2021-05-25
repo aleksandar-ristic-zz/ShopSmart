@@ -5,7 +5,7 @@ import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
 import Loader from './layout/Loader'
-import  MetaData from './layout/MetaData'
+import MetaData from './layout/MetaData'
 import Product from './product/Product'
 
 import { useAlert } from 'react-alert'

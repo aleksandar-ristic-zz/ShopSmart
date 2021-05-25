@@ -24,7 +24,7 @@ const ResetPassword = ({history, match}) => {
     }
 
     if(success) {
-      alert.success('Password reseted successfully');
+      alert.success('Password reset successfully');
 
       history.push('/login');
     }

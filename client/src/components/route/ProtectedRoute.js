@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   
-  const { isAuth, loading, user} = useSelector(state => state.auth)
+  const { isAuth, loading} = useSelector(state => state.auth)
   
   return !loading && ( <Route {...rest} 
     render={props => {
