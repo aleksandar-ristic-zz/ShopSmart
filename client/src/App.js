@@ -27,6 +27,9 @@ import UpdatePassword from './components/user/UpdatePassword'
 import ForgotPassword from './components/user/ForgotPassword'
 import ResetPassword from './components/user/ResetPassword'
 
+// Admin imports
+import Dashboard from './components/admin/Dashboard'
+
 import ProtectedRoute from './components/route/ProtectedRoute'
 import { loadUser } from './actions/userActions'
 import store from './store'
@@ -80,10 +83,11 @@ function App() {
       <ProtectedRoute exact path="/password/update" component={UpdatePassword} />
 
       <ProtectedRoute exact path="/orders/me" component={ListOrders} />
-       <ProtectedRoute exact path="/order/:id" component={OrderDetails} />
-      
-      <Footer />
+      <ProtectedRoute exact path="/order/:id" component={OrderDetails} />
+
       </div>
+       <ProtectedRoute exact path="/dashboard" isAdmin={true} component={Dashboard} />
+       <Footer />
     </>
   );
 }

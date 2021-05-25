@@ -4,6 +4,7 @@ import { Carousel } from 'react-bootstrap'
 
 import Loader from '../layout/Loader'
 import MetaData from '../layout/MetaData'
+import ListReview from '../review/ListReview'
 
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,6 +15,7 @@ import {
 } from '../../actions/productActions'
 
 import { addItemToCart } from '../../actions/cartActions'
+import { NEW_REVIEW_RESET } from '../../constants/productConstants'
 
 const ProductDetails = ({ match }) => {
 
@@ -37,7 +39,8 @@ const ProductDetails = ({ match }) => {
       price,
       description,
       seller,
-      stock
+      stock,
+      reviews
     } 
   } = useSelector(state => state.productDetails);
 
@@ -60,7 +63,7 @@ const ProductDetails = ({ match }) => {
     }
 
     if (success) {
-      alert.success(success);
+      alert.success('Review posted. Thank you for giving us your opinion');
     }
 
   }, [dispatch, alert, error, match.params.id, reviewError, success])
@@ -219,7 +222,7 @@ const ProductDetails = ({ match }) => {
         onClick={setUserRatings}
         >
         Submit Your Review
-      </button> : <div className="alert alert-danger mt-5">
+        </button> : <div className="alert alert-danger mt-5">
         <p class="muted">
           Only logged in users can post reviews. <Link to="/login">Login Here</Link>
         </p>
@@ -228,7 +231,8 @@ const ProductDetails = ({ match }) => {
           Don't have an account ? <Link to="/register">Register Here</Link>
         </p>
         
-      </div> }
+        </div>
+      }
 				
       <div className="row mt-2 mb-5">
         <div className="rating w-50">
@@ -267,13 +271,18 @@ const ProductDetails = ({ match }) => {
                   <textarea 
                     name="review" 
                     id="review" 
-                    className="form-control mt-3">
+                    className="form-control mt-3"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    >
                   </textarea>
 
                   <button 
                     className="btn my-3 float-right review-btn px-4 text-white" 
                     data-dismiss="modal" 
-                    aria-label="Close">
+                    aria-label="Close"
+                    onClick={reviewHandler}
+                    >
                     Submit
                   </button>
                 </div>
@@ -284,7 +293,11 @@ const ProductDetails = ({ match }) => {
       </div>
     </div>
   </div>
-      </>
+
+  {reviews && reviews.length > 0 && (
+    <ListReview reviews={reviews} />
+  )}
+  </>
   )}
   </>
 )}

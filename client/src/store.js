@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import { productsReducer, productDetailsReducer }  from './reducers/productReducer'
+import { productsReducer, productDetailsReducer, newReviewReducer }  from './reducers/productReducer'
 import { authReducer, forgotPasswordReducer, userReducer } from './reducers/userReducer'
 import { cartReducer } from './reducers/cartReducer'
 import { newOrderReducer, myOrdersReducer, orderDetailsReducer } from './reducers/orderReducer'
@@ -16,7 +16,8 @@ const reducer = combineReducers({
   cart: cartReducer,
   newOrder: newOrderReducer,
   myOrders: myOrdersReducer,
-  orderDetails: orderDetailsReducer
+  orderDetails: orderDetailsReducer,
+  newReview: newReviewReducer
 });
 
 let initialState = {

@@ -91,7 +91,7 @@ export const newReviewReducer = (
       case NEW_REVIEW_SUCCESS:
        return {
          loading: false,
-         product: payload
+         success: payload
        }
       case NEW_REVIEW_FAIL:
          return {
