@@ -18,18 +18,18 @@ const ConfirmOrder = ({ history }) => {
   const { user } = useSelector(state => state.auth);
 
   // Calculate order prices
-  const itemPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const shippingPrice = itemPrice > 200 ? 0 : 25;
+  const shippingPrice = itemsPrice > 200 ? 0 : 25;
 
-  const taxPrice = Number((.05 * itemPrice).toFixed(2));
+  const taxPrice = Number((.05 * itemsPrice).toFixed(2));
 
-  const totalPrice = (itemPrice + shippingPrice + taxPrice)
+  const totalPrice = (itemsPrice + shippingPrice + taxPrice)
   .toFixed(2);
 
   const proceedToPayment = () => {
     const data = {
-      itemPrice: itemPrice.toFixed(2),
+      itemsPrice: itemsPrice.toFixed(2),
       shippingPrice,
       taxPrice,
       totalPrice
@@ -93,7 +93,7 @@ const ConfirmOrder = ({ history }) => {
 
               <hr/>
 
-              <p>Subtotal:  <span className="order-summary-values">${itemPrice}</span></p>
+              <p>Subtotal:  <span className="order-summary-values">${itemsPrice}</span></p>
               <p>Shipping: <span className="order-summary-values">${shippingPrice}</span></p>
               <p>Tax:  <span className="order-summary-values">${taxPrice}</span></p>
 

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 
 import MetaData from '../layout/MetaData'
 import CheckoutSteps from './CheckoutSteps'
+import { createOrder, clearErrors } from '../../actions/orderActions'
 
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,12 +37,30 @@ const Payment = ({ history }) => {
 
   const { user } = useSelector(state => state.auth);
   const { cartItems, shippingInfo } = useSelector(state => state.cart);
+  const { error } = useSelector(state => state.newOrder)
 
   useEffect(() => {
   
-  }, []);
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+
+  }, [dispatch, alert, error]);
+
+  const order = {
+    orderItems: cartItems,
+    shippingInfo
+  }
 
   const orderInfo = JSON.parse(sessionStorage.getItem('orderInfo'));
+  if (orderInfo) {
+    order.itemsPrice = orderInfo.itemsPrice
+    order.shippingPrice = orderInfo.shippingPrice
+    order.taxPrice = orderInfo.taxPrice
+    order.totalPrice = orderInfo.totalPrice
+  }
+
   const paymentData = {
     amount: Math.round(orderInfo.totalPrice * 100)
   }
@@ -79,20 +98,27 @@ const Payment = ({ history }) => {
 
       if (result.error) {
         alert.error(result.error.message);
-        document.querySelector('#pay_btn').enabled = false;
+        document.querySelector('#pay_btn').disabled = false;
+
       } else {
         // The payment is proccessed or not
-        if (result.paymentIntent.status === 'succeded') {
-          //! new order
+        if (result.paymentIntent.status === 'succeeded') {
+          
+          order.paymentInfo = {
+            id: result.paymentIntent.id,
+            status: result.paymentIntent.status
+          }
+
+          dispatch(createOrder(order))
 
           history.push('/success')
         } else {
-          alert.error('There is some issue while processing payment.')
+          alert.error('There is some issue while processing payment.');
         }
       }
 
     } catch(err) {
-      document.querySelector('#pay_btn').enabled = false;
+      document.querySelector('#pay_btn').disabled = false;
       alert.error(err.response.data.errorMessage);
     }
   }
@@ -144,7 +170,7 @@ const Payment = ({ history }) => {
               type="submit"
               className="btn btn-block py-3"
             >
-              Pay
+              Pay {`- ${orderInfo && orderInfo.totalPrice}`}
             </button>
           </form>
 

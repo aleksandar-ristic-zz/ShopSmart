@@ -4,6 +4,10 @@ const app = express()
 const cookieParser = require('cookie-parser')
 const fileUpload = require('express-fileupload')
 
+const dotenv = require('dotenv')
+// Setting up config file
+dotenv.config({ path: 'api/config/config.env' })
+
 const errorMiddleware = require('./middleware/errors')
 
 app.use(express.json());
