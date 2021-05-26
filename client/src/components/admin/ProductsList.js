@@ -15,7 +15,7 @@ import { ImPencil, ImBin } from "react-icons/im";
 
 const ProductsList = ({ history }) => {
 
-   const alert = useAlert();
+  const alert = useAlert();
   const dispatch = useDispatch();
 
   const { loading, error, products } = useSelector( state => state.products );

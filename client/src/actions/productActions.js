@@ -13,6 +13,10 @@ import {
   NEW_REVIEW_REQUEST,
   NEW_REVIEW_SUCCESS,
   NEW_REVIEW_FAIL,
+  NEW_PRODUCT_REQUEST,
+  NEW_PRODUCT_SUCCESS,
+  NEW_PRODUCT_RESET,
+  NEW_PRODUCT_FAIL,
   CLEAR_ERRORS
 } from '../constants/productConstants'
 
@@ -103,7 +107,7 @@ export const newReview = (reviewData) => async dispatch => {
 
 //* Admin routes
 
-// Get Product Details
+// Get All Products
 export const getAdminProducts = () => async dispatch => {
 
   try {
@@ -125,10 +129,37 @@ export const getAdminProducts = () => async dispatch => {
   }
 }
 
+// Add new product
+export const newProduct = (productData) => async dispatch => {
+
+  try {
+   
+    dispatch({ type: NEW_PRODUCT_REQUEST });
+
+     const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const { data } = await axios.put(`/api/v1/product/new`, productData, config);
+
+    dispatch({
+      type: NEW_PRODUCT_RESET,
+      payload: data
+    });
+
+  } catch(err) {
+    dispatch({
+      type: NEW_PRODUCT_FAIL,
+      payload: err.response.data.errorMessage
+    });
+  }
+}
+
 // Clear Errors
 export const clearErrors = () => async dispatch => {
   dispatch({
     type: CLEAR_ERRORS
   });
 }
-
