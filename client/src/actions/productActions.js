@@ -4,6 +4,9 @@ import {
   ALL_PRODUCTS_REQUEST,
   ALL_PRODUCTS_SUCCESS,
   ALL_PRODUCTS_FAIL,
+  ADMIN_PRODUCTS_REQUEST,
+  ADMIN_PRODUCTS_SUCCESS,
+  ADMIN_PRODUCTS_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
@@ -48,7 +51,7 @@ export const getProducts = (
   }
 }
 
-// Get All Products
+// Get Product Details
 export const getProductDetails = (id) => async dispatch => {
 
   try {
@@ -93,6 +96,30 @@ export const newReview = (reviewData) => async dispatch => {
   } catch(err) {
     dispatch({
       type: NEW_REVIEW_FAIL,
+      payload: err.response.data.errorMessage
+    });
+  }
+}
+
+//* Admin routes
+
+// Get Product Details
+export const getAdminProducts = () => async dispatch => {
+
+  try {
+   
+    dispatch({ type: ADMIN_PRODUCTS_REQUEST });
+
+    const { data } = await axios.get('/api/v1/admin/products');
+
+    dispatch({
+      type: ADMIN_PRODUCTS_SUCCESS,
+      payload: data.products
+    });
+
+  } catch(err) {
+    dispatch({
+      type: ADMIN_PRODUCTS_FAIL,
       payload: err.response.data.errorMessage
     });
   }

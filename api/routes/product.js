@@ -9,7 +9,8 @@ const {
   deleteProduct,
   createProductReview,
   getProductAllReviews,
-  deleteReview
+  deleteReview,
+  getAdminProducts
 } = 
 require('../controllers/productController')
 
@@ -17,6 +18,8 @@ const { isAuthUser, authRoles } = require('../middleware/auth')
 
 router.route('/products').get(getProducts);
 router.route('/product/:id').get(getSingleProduct);
+
+router.route('/admin/products').get(getAdminProducts)
 
 router.route('/admin/product/new')
 .post(isAuthUser, authRoles('admin'), newProduct);

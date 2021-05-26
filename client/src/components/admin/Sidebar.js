@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { FaBoxes, FaClipboardList } from "react-icons/fa";
+import { MdRateReview } from "react-icons/md";
 
 const Sidebar = () => {
   return (
@@ -16,12 +18,12 @@ const Sidebar = () => {
                 data-toggle="collapse" 
                 aria-expanded="false" 
                 className="dropdown-toggle">
-                <i className="fab fa-product-hunt"></i> 
+                <FaBoxes className="mr-2" />
                 Products
               </a>
               <ul className="collapse list-unstyled" id="productSubmenu">
                 <li>
-                  <Link to="/admin/products"><i className="fa fa-clipboard-list"></i> All</Link>
+                  <Link to="/admin/products"><FaClipboardList className="mr-1" />All</Link>
                 </li>
             
                 <li>
@@ -42,7 +44,7 @@ const Sidebar = () => {
 
             
             <li>
-              <Link to="/admin/reviews"><i className="fa fa-users"></i> Reviews</Link>
+              <Link to="/admin/reviews"><MdRateReview className="mr-1" /> Reviews</Link>
             </li>
             
           </ul>

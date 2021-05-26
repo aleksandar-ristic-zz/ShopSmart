@@ -42,6 +42,8 @@ exports.getProducts = catchAsyncErrors( async (req, res, next) => {
   });
 });
 
+
+
 // Get single product details => /api/v1/product/:id
 exports.getSingleProduct = catchAsyncErrors( async (req, res, next) => {
 
@@ -180,4 +182,17 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
   })
+});
+
+//* Admin routes
+
+// Get all products (Admin) => /api/v1/admin/products
+exports.getAdminProducts = catchAsyncErrors( async (req, res, next) => {
+  
+  const products = await Product.find();
+
+  return res.status(200).json({
+    success: true,
+    products
+  });
 });
