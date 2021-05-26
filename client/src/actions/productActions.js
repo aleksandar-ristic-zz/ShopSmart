@@ -7,16 +7,21 @@ import {
   ADMIN_PRODUCTS_REQUEST,
   ADMIN_PRODUCTS_SUCCESS,
   ADMIN_PRODUCTS_FAIL,
+  NEW_PRODUCT_REQUEST,
+  NEW_PRODUCT_SUCCESS,
+  NEW_PRODUCT_FAIL,
+  DELETE_PRODUCT_REQUEST,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_FAIL,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   NEW_REVIEW_REQUEST,
   NEW_REVIEW_SUCCESS,
   NEW_REVIEW_FAIL,
-  NEW_PRODUCT_REQUEST,
-  NEW_PRODUCT_SUCCESS,
-  NEW_PRODUCT_RESET,
-  NEW_PRODUCT_FAIL,
   CLEAR_ERRORS
 } from '../constants/productConstants'
 
@@ -107,7 +112,7 @@ export const newReview = (reviewData) => async dispatch => {
 
 //* Admin routes
 
-// Get All Products
+// Get All Products (ADMIN)
 export const getAdminProducts = () => async dispatch => {
 
   try {
@@ -129,7 +134,7 @@ export const getAdminProducts = () => async dispatch => {
   }
 }
 
-// Add new product
+// Add new product (ADMIN)
 export const newProduct = (productData) => async dispatch => {
 
   try {
@@ -142,16 +147,38 @@ export const newProduct = (productData) => async dispatch => {
       }
     }
 
-    const { data } = await axios.put(`/api/v1/product/new`, productData, config);
+    const { data } = await axios.post(`/api/v1/admin/product/new`, productData, config);
 
     dispatch({
-      type: NEW_PRODUCT_RESET,
+      type: NEW_PRODUCT_SUCCESS,
       payload: data
     });
 
   } catch(err) {
     dispatch({
       type: NEW_PRODUCT_FAIL,
+      payload: err.response.data.errorMessage
+    });
+  }
+}
+
+// Delete product (ADMIN)
+export const deleteProduct = (id) => async dispatch => {
+
+  try {
+   
+    dispatch({ type: DELETE_PRODUCT_REQUEST });
+
+    const { data } = await axios.delete(`/api/v1/admin/product/${id}`);
+
+    dispatch({
+      type: DELETE_PRODUCT_SUCCESS,
+      payload: data.success
+    });
+
+  } catch(err) {
+    dispatch({
+      type: DELETE_PRODUCT_FAIL,
       payload: err.response.data.errorMessage
     });
   }

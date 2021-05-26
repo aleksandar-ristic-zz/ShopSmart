@@ -32,7 +32,7 @@ const Shipping = ({ history }) => {
       country 
     }));
 
-    history.push('/order/confirm');
+    history.push('/orders/confirm');
   }
 
   return (

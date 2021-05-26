@@ -9,16 +9,19 @@ import Sidebar from './Sidebar'
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getAdminProducts, clearErrors } from '../../actions/productActions'
+import { getAdminProducts, deleteProduct, clearErrors} from '../../actions/productActions'
+import { DELETE_PRODUCT_RESET } from '../../constants/productConstants'
 
-import { ImPencil, ImBin } from "react-icons/im";
+import { ImPencil, ImBin } from "react-icons/im"
 
 const ProductsList = ({ history }) => {
 
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { loading, error, products } = useSelector( state => state.products );
+  const { loading, error, products } = useSelector( state => state.products);
+
+  const { error: deleteError, isDeleted } = useSelector(state => state.product)
 
   useEffect(() => {
     dispatch(getAdminProducts());
@@ -27,7 +30,18 @@ const ProductsList = ({ history }) => {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, error]);
+
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors());
+    }
+    console.log(isDeleted);
+    if (isDeleted) {
+      alert.success('Product has been removed.');
+      history.push('/admin/products');
+      dispatch({ type: DELETE_PRODUCT_RESET });
+    }
+  }, [dispatch, alert, error, deleteError, isDeleted, history]);
 
   const setProducts= () => {
     const data = {
@@ -64,7 +78,7 @@ const ProductsList = ({ history }) => {
       data.rows.push({
         id: product._id,
         name: product.name,
-        price: product.price,
+        price: `$${product.price}`,
         stock: product.stock,
         actions:
         <>
@@ -73,7 +87,7 @@ const ProductsList = ({ history }) => {
           className="btn btn-primary mr-1" >
             <ImPencil />
           </Link>
-          <button className="btn btn-danger">
+          <button className="btn btn-danger" onClick={() => deleteProductHandler(product._id)}>
             <ImBin />
           </button>
         </>
@@ -81,6 +95,10 @@ const ProductsList = ({ history }) => {
     })
 
     return data;
+  }
+
+  const deleteProductHandler = (id) => {
+    dispatch(deleteProduct(id));
   }
 
   return (
@@ -96,15 +114,13 @@ const ProductsList = ({ history }) => {
             <h1 className="my-5">All products</h1>
 
             {loading ? <Loader /> : (
-              <>
                  <MDBDataTable 
                   data={setProducts()}
                   className="px-3"
                   bordered
                   striped
                   hover
-                  />
-              </>
+                />
             )}
           </>
         </div>
