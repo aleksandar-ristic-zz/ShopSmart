@@ -31,6 +31,7 @@ import ResetPassword from './components/user/ResetPassword';
 import Dashboard from './components/admin/Dashboard';
 import ProductsList from './components/admin/ProductsList';
 import NewProduct from './components/admin/NewProduct';
+import UpdateProduct from './components/admin/UpdateProduct';
 
 import ProtectedRoute from './components/route/ProtectedRoute';
 import { useSelector } from 'react-redux';
@@ -113,6 +114,13 @@ function App() {
 				path='/admin/product'
 				isAdmin={true}
 				component={NewProduct}
+			/>
+
+				<ProtectedRoute
+				exact
+				path='/admin/product/:id'
+				isAdmin={true}
+				component={UpdateProduct}
 			/>
 
 			{!loading && user.role !== 'admin' && <Footer />}

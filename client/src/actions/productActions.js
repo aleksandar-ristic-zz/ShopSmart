@@ -184,6 +184,34 @@ export const deleteProduct = (id) => async dispatch => {
   }
 }
 
+// Update product (ADMIN)
+export const updateProduct = (id, productData) => async dispatch => {
+
+  try {
+   
+    dispatch({ type: UPDATE_PRODUCT_REQUEST });
+
+     const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const { data } = await axios.put(`/api/v1/admin/product/${id}`, productData, config);
+
+    dispatch({
+      type: UPDATE_PRODUCT_SUCCESS,
+      payload: data.success
+    });
+
+  } catch(err) {
+    dispatch({
+      type: UPDATE_PRODUCT_FAIL,
+      payload: err.response.data.errorMessage
+    });
+  }
+}
+
 // Clear Errors
 export const clearErrors = () => async dispatch => {
   dispatch({
