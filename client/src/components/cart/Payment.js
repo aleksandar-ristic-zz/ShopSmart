@@ -110,9 +110,8 @@ const Payment = ({ history }) => {
             status: result.paymentIntent.status
           }
 
-          dispatch(createOrder(order))
-
-          history.push('/success')
+          dispatch(createOrder(order));
+          history.push('/success');
         } else {
           alert.error('There is some issue while processing payment.');
         }
@@ -143,6 +142,8 @@ const Payment = ({ history }) => {
                 className="form-control"
                 options={options}
               />
+              <p className="text-muted font-weight-light">* Test card number: 4000 0027 6000 3184 </p>
+              
             </div>
 				
 				    <div className="form-group">
@@ -153,6 +154,7 @@ const Payment = ({ history }) => {
                 className="form-control"
                 options={options}
               />
+              <p className="text-muted font-weight-light">* 4 digits</p>
             </div>
 				
 				    <div className="form-group">
@@ -163,6 +165,7 @@ const Payment = ({ history }) => {
                 className="form-control"
                 options={options}
               />
+              <p className="text-muted font-weight-light">* 3 digits</p>
             </div>
       
             

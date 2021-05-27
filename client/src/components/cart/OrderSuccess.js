@@ -1,8 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import MetaData from '../layout/MetaData'
 
+import { useDispatch, useSelector } from 'react-redux'
+import { 
+  removeItemFromCart 
+} from '../../actions/cartActions'
+
 const OrderSuccess = () => {
+
+  const dispatch = useDispatch();
+
+  const { cartItems } = useSelector(state=> state.cart);
+
+  useEffect(() => {
+
+    cartItems.forEach(item => {
+      dispatch(removeItemFromCart(item.product));
+    });
+
+  }, [dispatch,cartItems])
+
   return (
     <>
       <MetaData title={'Order Success'} />

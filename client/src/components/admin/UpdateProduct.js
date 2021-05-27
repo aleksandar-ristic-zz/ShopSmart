@@ -74,7 +74,7 @@ const UpdateProduct = ({ match, history }) => {
 			history.push('/admin/products');
 			dispatch({ type: UPDATE_PRODUCT_RESET });
 		}
-	}, [dispatch, alert, error, updateError, isUpdated, history, product]);
+	}, [dispatch, alert, error, updateError, isUpdated, history, product, productId]);
 
   const submitHandler = e => {
 		e.preventDefault();

@@ -14,7 +14,7 @@ const OrderDetails = ({ match }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { loading, error, orders= {} } = useSelector(state => state.orderDetails);
+  const { loading, error, order= {} } = useSelector(state => state.orderDetails);
 
   const {
      _id,
@@ -24,8 +24,7 @@ const OrderDetails = ({ match }) => {
     user,
     totalPrice,
     orderStatus
-  } = orders
-
+  } = order
 
   useEffect(() => {
     dispatch(getOrderDetails(match.params.id));
@@ -91,7 +90,7 @@ const OrderDetails = ({ match }) => {
                     </div>
 
                     <div className="col-4 col-lg-3 mt-4 mt-lg-0 py-3 blue center">
-                      <span classname="inherit">{item.quantity > 1 ? `${item.quantity} Pieces` : '1 Piece'}</span>
+                      <span className="inherit">{item.quantity > 1 ? `${item.quantity} Pieces` : '1 Piece'}</span>
                     </div>
                   </div>
                 ))}

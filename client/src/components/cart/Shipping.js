@@ -48,7 +48,7 @@ const Shipping = ({ history }) => {
           <h1 className="mb-4">Shipping Info</h1>
 
           <div className="form-group">
-            <label hmtlFor="address_field">Address</label>
+            <label htmlFor="address_field">Address</label>
             <input
               type="text"
               id="address_field"

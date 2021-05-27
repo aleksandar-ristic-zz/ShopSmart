@@ -9,8 +9,8 @@ import Sidebar from './Sidebar'
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { allOrders, clearErrors} from '../../actions/orderActions'
-import { DELETE_PRODUCT_RESET } from '../../constants/productConstants'
+import { allOrders, deleteOrder, clearErrors} from '../../actions/orderActions'
+import { DELETE_ORDER_RESET } from '../../constants/orderConstants'
 
 import { ImEye, ImBin } from "react-icons/im"
 
@@ -20,6 +20,7 @@ const OrdersList = ({ history }) => {
   const dispatch = useDispatch();
 
   const { loading, error, orders } = useSelector( state => state.allOrders);
+  const { isDeleted } = useSelector(state => state.order);
 
   useEffect(() => {
     dispatch(allOrders());
@@ -29,13 +30,13 @@ const OrdersList = ({ history }) => {
       dispatch(clearErrors());
     }
 
-   /* if (isDeleted) {
-      alert.success('Product has been removed.');
-      history.push('/admin/products');
-      dispatch({ type: DELETE_PRODUCT_RESET });
+   if (isDeleted) {
+      alert.success('Order has been removed.');
+      history.push('/admin/orders');
+      dispatch({ type: DELETE_ORDER_RESET });
     }
-  */
-  }, [dispatch, alert, error, history]);
+  
+  }, [dispatch, alert, error, history, isDeleted]);
 
   const setOrders= () => {
     const data = {
@@ -95,7 +96,7 @@ const OrdersList = ({ history }) => {
   }
 
   const deleteOrderHandler = (id) => {
-    //dispatch(deleteProduct(id));
+    dispatch(deleteOrder(id));
   }
 
   return (

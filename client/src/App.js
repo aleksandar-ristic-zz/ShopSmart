@@ -1,64 +1,72 @@
-import { useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Route } from 'react-router-dom'
 
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
+import Header from './components/layout/Header'
+import Footer from './components/layout/Footer'
 
-import Home from './components/Home';
-import ProductDetails from './components/product/ProductDetails';
+import Home from './components/Home'
+import ProductDetails from './components/product/ProductDetails'
 
 // Cart Imports
-import Cart from './components/cart/Cart';
-import Shipping from './components/cart/Shipping';
-import ConfirmOrder from './components/cart/ConfirmOrder';
-import Payment from './components/cart/Payment';
-import OrderSuccess from './components/cart/OrderSuccess';
+import Cart from './components/cart/Cart'
+import Shipping from './components/cart/Shipping'
+import ConfirmOrder from './components/cart/ConfirmOrder'
+import Payment from './components/cart/Payment'
+import OrderSuccess from './components/cart/OrderSuccess'
 
 // Order Imports
-import ListOrders from './components/order/ListOrders';
-import OrderDetails from './components/order/OrderDetails';
+import ListOrders from './components/order/ListOrders'
+import OrderDetails from './components/order/OrderDetails'
 
 // Auth or User imports
-import Login from './components/user/Login';
-import Register from './components/user/Register';
-import Profile from './components/user/Profile';
-import UpdateProfile from './components/user/UpdateProfile';
-import UpdatePassword from './components/user/UpdatePassword';
-import ForgotPassword from './components/user/ForgotPassword';
-import ResetPassword from './components/user/ResetPassword';
+import Login from './components/user/Login'
+import Register from './components/user/Register'
+import Profile from './components/user/Profile'
+import UpdateProfile from './components/user/UpdateProfile'
+import UpdatePassword from './components/user/UpdatePassword'
+import ForgotPassword from './components/user/ForgotPassword'
+import ResetPassword from './components/user/ResetPassword'
 
-// Admin imports
-import Dashboard from './components/admin/Dashboard';
-import ProductsList from './components/admin/ProductsList';
-import NewProduct from './components/admin/NewProduct';
-import UpdateProduct from './components/admin/UpdateProduct';
-import OrdersList from './components/admin/OrdersList';
+// Admin Imports
+import Dashboard from './components/admin/Dashboard'
+import ProductsList from './components/admin/ProductsList'
+import NewProduct from './components/admin/NewProduct'
+import UpdateProduct from './components/admin/UpdateProduct'
+import OrdersList from './components/admin/OrdersList'
+import ProcessOrder from './components/admin/ProcessOrder'
+//import UsersList from './components/admin/UsersList'
+//import UpdateUser from './components/admin/UpdateUser'
+//import ProductReviews from './components/admin/ProductReviews'
 
-import ProtectedRoute from './components/route/ProtectedRoute';
-import { useSelector } from 'react-redux';
-import { loadUser } from './actions/userActions';
-import store from './store';
-import axios from 'axios';
+
+import ProtectedRoute from './components/route/ProtectedRoute'
+import { loadUser } from './actions/userActions'
+import { useSelector } from 'react-redux'
+import store from './store'
+import axios from 'axios'
 
 // Payment
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 
 function App() {
-	const [stripeApiKey, setStripeApiKey] = useState('');
 
-	useEffect(() => {
-		store.dispatch(loadUser());
+  const [stripeApiKey, setStripeApiKey] = useState('');
 
-		async function getStripeApiKey() {
-			const { data } = await axios.get('/api/v1/stripeapi');
+  useEffect(() => {
+    store.dispatch(loadUser())
 
-			setStripeApiKey(data.stripeApiKey);
-		}
-		getStripeApiKey();
-	}, []);
+    async function getStripApiKey() {
+      const { data } = await axios.get('/api/v1/stripeapi');
 
-	const { user, loading } = useSelector(state => state.auth);
+      setStripeApiKey(data.stripeApiKey)
+    }
+
+    getStripApiKey();
+
+  }, [])
+
+  const { user, isAuth, loading } = useSelector(state => state.auth)
 
 	return (
 		<>
@@ -94,7 +102,7 @@ function App() {
 					path='/password/update'
 					component={UpdatePassword}
 				/>
-
+				
 				<ProtectedRoute exact path='/orders/me' component={ListOrders} />
 				<ProtectedRoute exact path='/order/:id' component={OrderDetails} />
 			</div>
@@ -131,7 +139,17 @@ function App() {
 				component={OrdersList}
 			/>
 
-			{!loading && user.role !== 'admin' && <Footer />}
+			<ProtectedRoute
+				exact
+				path='/admin/order/:id'
+				isAdmin={true}
+				component={ProcessOrder}
+			/>
+			
+
+			{!loading && (!isAuth|| user.role !== 'admin') && (
+          <Footer />
+        )}
 		</>
 	);
 }

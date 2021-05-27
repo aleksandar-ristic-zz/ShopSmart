@@ -15,9 +15,11 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   const { loading, products } = useSelector(state => state.products);
-  const { orders, totalAmount } = useSelector(state => state.allOrders)
+  const { orders, totalAmount} = useSelector(state => state.allOrders)
 
   let outOfStock = 0;
+
+  
 
   products.forEach(product => {
     if(product.stock === 0) {
@@ -50,7 +52,7 @@ const Dashboard = () => {
 
                 <div className="card-body">
                   <div className="text-center card-font-size">
-                    Total Amount<br/> <b>${totalAmount}</b>
+                    Total Amount<br/> <b>${totalAmount && totalAmount.toFixed(2)}</b>
                   </div>
                 </div>
               
