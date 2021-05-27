@@ -27,7 +27,7 @@ const Product = ({ col, product: {
           </div>
           <span id="no_of_reviews">{numOfReviews}</span>
         </div>
-        <p className="card-text">{price}</p>
+        <p className="card-text">${price}</p>
         <Link to={`/product/${_id}`} id="view_btn" className="btn btn-block">View Details</Link>
       </div>
     </div>

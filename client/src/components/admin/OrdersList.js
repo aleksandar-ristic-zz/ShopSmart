@@ -9,61 +9,55 @@ import Sidebar from './Sidebar'
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getAdminProducts, deleteProduct, clearErrors} from '../../actions/productActions'
+import { allOrders, clearErrors} from '../../actions/orderActions'
 import { DELETE_PRODUCT_RESET } from '../../constants/productConstants'
 
-import { ImPencil, ImBin } from "react-icons/im"
+import { ImEye, ImBin } from "react-icons/im"
 
-const ProductsList = ({ history }) => {
+const OrdersList = ({ history }) => {
 
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { loading, error, products } = useSelector( state => state.products);
-
-  const { error: deleteError, isDeleted } = useSelector(state => state.product)
+  const { loading, error, orders } = useSelector( state => state.allOrders);
 
   useEffect(() => {
-    dispatch(getAdminProducts());
+    dispatch(allOrders());
 
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
 
-    if (deleteError) {
-      alert.error(deleteError);
-      dispatch(clearErrors());
-    }
-
-    if (isDeleted) {
+   /* if (isDeleted) {
       alert.success('Product has been removed.');
       history.push('/admin/products');
       dispatch({ type: DELETE_PRODUCT_RESET });
     }
-  }, [dispatch, alert, error, deleteError, isDeleted, history]);
+  */
+  }, [dispatch, alert, error, history]);
 
-  const setProducts= () => {
+  const setOrders= () => {
     const data = {
       columns: [
         {
-          label: 'ID',
+          label: 'Order ID',
           field: 'id',
           sort: 'asc'
         },
         {
-          label: 'Name',
-          field: 'name',
+          label: 'No of Items',
+          field: 'numOfItems',
           sort: 'asc'
         },
          {
-          label: 'Price',
-          field: 'price',
+          label: 'Amount',
+          field: 'amount',
           sort: 'asc'
         },
          {
-          label: 'Stock',
-          field: 'stock',
+          label: 'Status',
+          field: 'status',
           sort: 'asc'
         },
          {
@@ -74,20 +68,23 @@ const ProductsList = ({ history }) => {
       rows: []
     }
 
-    products.forEach(product => {
+    orders.forEach(order => {
       data.rows.push({
-        id: product._id,
-        name: product.name,
-        price: `$${product.price}`,
-        stock: product.stock,
+        id: order._id,
+        numOfItems: order.orderItems.length,
+        amount: `$${order.totalPrice}`,
+        status: order.orderStatus && String(order.orderStatus)
+        .includes('Delivered') 
+        ? <p style={{ color: 'green' }}>{order.orderStatus}</p> 
+        : <p style={{ color: 'red' }}>{order.orderStatus}</p>,
         actions:
         <>
           <Link 
-          to={`/admin/product/${product._id}`} 
-          className="btn text-white mr-1 bg-warning" >
-            <ImPencil />
+          to={`/admin/order/${order._id}`} 
+          className="btn btn-primary mr-1" >
+            <ImEye />
           </Link>
-          <button className="btn btn-danger" onClick={() => deleteProductHandler(product._id)}>
+          <button className="btn btn-danger" onClick={() => deleteOrderHandler(order._id)}>
             <ImBin />
           </button>
         </>
@@ -97,13 +94,13 @@ const ProductsList = ({ history }) => {
     return data;
   }
 
-  const deleteProductHandler = (id) => {
-    dispatch(deleteProduct(id));
+  const deleteOrderHandler = (id) => {
+    //dispatch(deleteProduct(id));
   }
 
   return (
     <>
-      <MetaData title={'All Products'} />
+      <MetaData title={'All Orders'} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
@@ -115,7 +112,7 @@ const ProductsList = ({ history }) => {
 
             {loading ? <Loader /> : (
                  <MDBDataTable 
-                  data={setProducts()}
+                  data={setOrders()}
                   className="px-3"
                   bordered
                   striped
@@ -129,4 +126,4 @@ const ProductsList = ({ history }) => {
   )
 }
 
-export default ProductsList
+export default OrdersList
