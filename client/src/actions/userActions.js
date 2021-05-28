@@ -68,7 +68,7 @@ export const loginUser = (email, password) => async dispatch => {
 }
 
 // Register User
-export const registerUser = (user) => async dispatch => {
+export const registerUser = (userData) => async dispatch => {
   try {
    
     dispatch({ type: REGISTER_REQUEST });
@@ -80,7 +80,7 @@ export const registerUser = (user) => async dispatch => {
     }
 
     const { data } = await axios.post(
-      '/api/v1/register', user, config);
+      '/api/v1/register', userData, config);
 
     dispatch({
       type: REGISTER_SUCCESS,
@@ -116,7 +116,7 @@ export const loadUser = () => async dispatch => {
 }
 
 // Update profile
-export const updateProfile = (user) => async dispatch => {
+export const updateProfile = (userData) => async dispatch => {
   try {
    
     dispatch({ type: UPDATE_PROFILE_REQUEST });
@@ -128,7 +128,7 @@ export const updateProfile = (user) => async dispatch => {
     }
 
     const { data } = await axios.put(
-      '/api/v1/me/update', user, config);
+      '/api/v1/me/update', userData, config);
 
     dispatch({
       type: UPDATE_PROFILE_SUCCESS,
@@ -230,13 +230,11 @@ export const resetPassword= (token, passwords) => async dispatch => {
 // Logout User
 export const logoutUser = () => async dispatch => {
   try {
-    dispatch({ type: LOAD_USER_REQUEST });
 
-    const { data } = await axios.get('/api/v1/logout');
+    await axios.get('/api/v1/logout');
 
     dispatch({
       type: LOGOUT_SUCCESS,
-      payload: data.user
     });
 
   } catch(err) {
@@ -272,6 +270,7 @@ export const allUsers = () => async dispatch => {
 // User Details (ADMIN)
 export const getUserDetails = (id) => async dispatch => {
   try {
+    
     dispatch({ type: USER_DETAILS_REQUEST });
 
     const { data } = await axios.get(`/api/v1/admin/user/${id}`);

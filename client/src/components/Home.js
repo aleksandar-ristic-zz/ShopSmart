@@ -77,7 +77,7 @@ const Home = ({ match }) => {
 
 
   const setCurrentPageNo = (pageNo) => {
-    setCurrentPage(pageNo)
+    setCurrentPage(pageNo);
   }
 
   let count = productsCount;
@@ -94,6 +94,7 @@ const Home = ({ match }) => {
    
          <section id="products" className="container mt-5">
            <div className="row">
+
             {keyword ? (
               <>
               <div className="col-6 col-md-3 mt-5 mb-5">
@@ -167,13 +168,14 @@ const Home = ({ match }) => {
 
               <div className="col-6 col-md-9">
                 <div className="row">
-                  { products.map(product => (
+
+                  {products && products.map(product => (
                     <Product key={product._id} product={product} col={4} /> 
                   ))}
                 </div>
               </div>
               </>
-            ) : ( products.map(product => (
+            ) : (products && products.map(product => (
               <Product key={product._id} product={product} col={3} />
             )))}
 

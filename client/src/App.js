@@ -160,7 +160,7 @@ function App() {
 				component={UpdateUser}
 			/>
 			
-			{!loading && (!isAuth|| user.role !== 'admin') && (
+			{!loading && (!isAuth || user.role !== 'admin') && (
           <Footer />
         )}
 		</>

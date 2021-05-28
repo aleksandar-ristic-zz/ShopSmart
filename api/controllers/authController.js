@@ -2,7 +2,6 @@ const User = require('../models/User')
 
 const ErrorHandler = require('../utils/errorHandler')
 const catchAsyncErrors = require('../middleware/catchAsyncErrors')
-const APIFeatures = require('../utils/apiFeatures')
 const sendToken = require('../utils/jwtToken')
 const sendEmail = require('../utils/sendEmail')
 
@@ -217,7 +216,7 @@ exports.logoutUser = catchAsyncErrors( async (req, res, next) => {
 //* Admin routes 
 
 // Get all users => /api/v1/admin/users
-exports.allUsers = catchAsyncErrors ( async (req, res, next) => {
+exports.allUsers = catchAsyncErrors (async (req, res, next) => {
 
   const users = await User.find();
 
@@ -228,13 +227,13 @@ exports.allUsers = catchAsyncErrors ( async (req, res, next) => {
 });
 
 // Get user details => api/v1/admin/user/:id
-exports.getUserDetails = catchAsyncErrors( async (req, res, next) =>{
+exports.getUserDetails = catchAsyncErrors(async (req, res, next) =>{
 
   const user = await User.findById(req.params.id);
 
   if (!user) {
-    return next (new ErrorHandler(`User is not found with: 
-    ${req.params}`));
+    return next (new ErrorHandler(`User is not found with id: 
+    ${req.params.id}`));
   }
 
   res.status(200).json({
@@ -263,17 +262,19 @@ exports.updateUser = catchAsyncErrors(async (req, res, next) => {
   })
 });
 
-// Delete user profile => /api/v1/admin/user/:id
+// Delete user  => /api/v1/admin/user/:id
 exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
   
   const user = await User.findById(req.params.id);
 
   if (!user) {
-    return next (new ErrorHandler(`User is not found with: 
-    ${req.params}`));
+    return next (new ErrorHandler(`User is not found with id: 
+    ${req.params.id}`));
   }
 
-  //! Remove avatar from cloudinary
+  // Remove avatar from cloudinary
+  const image_id = user.avatar.public_id;
+  await cloudinary.v2.uploader.destroy(image_id)
 
   await user.remove();
 

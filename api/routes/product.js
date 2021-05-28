@@ -3,14 +3,14 @@ const router = express.Router()
 
 const { 
   getProducts, 
-  newProduct, 
   getSingleProduct, 
-  updateProduct,
-  deleteProduct,
   createProductReview,
   getProductAllReviews,
   deleteReview,
-  getAdminProducts
+  getAdminProducts,
+  updateProduct,
+  deleteProduct,
+  newProduct,
 } = 
 require('../controllers/productController')
 
@@ -29,7 +29,8 @@ router.route('/admin/product/:id')
 .delete(isAuthUser, authRoles('admin'), deleteProduct);
 
 router.route('/review').put(isAuthUser, createProductReview);
-router.route('/reviews').get(isAuthUser, getProductAllReviews);
-router.route('/reviews').delete(isAuthUser, deleteReview);
+router.route('/reviews')
+.get(isAuthUser, getProductAllReviews)
+.delete(isAuthUser, deleteReview);
 
 module.exports = router;

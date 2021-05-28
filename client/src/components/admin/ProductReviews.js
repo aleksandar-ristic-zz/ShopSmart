@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 import { MDBDataTable } from 'mdbreact'
 
 import Loader from '../layout/Loader'
@@ -9,12 +8,15 @@ import Sidebar from './Sidebar'
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { allUsers, deleteUser, clearErrors} from '../../actions/userActions'
-import { DELETE_USER_RESET } from '../../constants/userConstants'
+import { getProductReviews, clearErrors} from '../../actions/productActions'
+
+import { DELETE_REVIEW_RESET } from '../../constants/userConstants'
 
 import { ImPencil, ImBin } from "react-icons/im"
 
-const UsersList = ({ history }) => {
+const ProductReviews = ({ history }) => {
+
+  const [productId, setProductId] = useState('');
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -94,36 +96,11 @@ const UsersList = ({ history }) => {
     return data;
   }
 
-  const deleteUserHandler = (id) => {
-    dispatch(deleteUser(id));
-  }
-  
   return (
-    <>
-       <MetaData title={'All Users'} />
-      <div className="row">
-        <div className="col-12 col-md-2">
-          <Sidebar />
-        </div>
-
-        <div className="col-12 col-md-10">
-          <>
-            <h1 className="my-5">All users</h1>
-
-            {loading ? <Loader /> : (
-                 <MDBDataTable 
-                  data={setUsers()}
-                  className="px-3"
-                  bordered
-                  striped
-                  hover
-                />
-            )}
-          </>
-        </div>
-      </div>
-    </>
+    <div>
+      
+    </div>
   )
 }
 
-export default UsersList
+export default ProductReviews

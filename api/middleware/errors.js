@@ -4,6 +4,8 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   
   if (process.env.NODE_ENV === 'DEVELOPMENT') {
+    console.log(err)
+
     res.status(err.statusCode).json({
       success: false,
       error: err,
@@ -25,14 +27,14 @@ module.exports = (err, req, res, next) => {
 
     // Handling Mongoose Validation Error
     if (err.name === 'ValidationError') {
-      const message = Object.values(err.values)
+      const message = Object.values(err.errors)
       .map(val => val.message);
         error = new ErrorHandler(message, 400);
     }
 
     // Handling Mongoose duplicate key errors
     if (err.code === 11000) {
-      const message = `Duplicate ${Object.keys(err.key(value))} entered`
+      const message = `Duplicate ${Object.keys(err.keyValue)} entered`
     }
 
     // Handling wrong JWT err
@@ -47,7 +49,7 @@ module.exports = (err, req, res, next) => {
         error = new ErrorHandler(message, 400);
     }
 
-    res.status(error.statusCode).json({
+    res.status(error.statusCode || 500).json({
       success: false,
       message: error.message || 'Internal Server Error'
     });

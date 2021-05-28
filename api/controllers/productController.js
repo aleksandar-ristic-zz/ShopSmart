@@ -7,12 +7,13 @@ const cloudinary = require('cloudinary');
 
 // Get all products => /api/v1/products?keyword=query
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
+
 	const resPerPage = 4;
 	const productsCount = await Product.countDocuments();
 
 	const apiFeatures = new APIFeatures(Product.find(), req.query)
 		.search()
-		.filter();
+		.filter()
 
 	let products = await apiFeatures.query;
 	let filteredProductsCount = products.length;
@@ -25,7 +26,7 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
 		resPerPage,
 		productsCount,
 		filteredProductsCount,
-		products,
+		products
 	});
 });
 
@@ -39,7 +40,7 @@ exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
 
 	res.status(200).json({
 		success: true,
-		product,
+		product
 	});
 });
 
@@ -53,7 +54,7 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
 		user: req.user._id,
 		name: req.user.name,
 		rating: Number(rating),
-		comment,
+		comment
 	};
 
 	const product = await Product.findById(productId);
@@ -69,19 +70,18 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
 				review.rating = rating;
 			}
 		});
+
 	} else {
 		product.reviews.push(review);
 		product.numOfReviews = product.reviews.length;
 	}
 
-	product.ratings =
-		product.reviews.reduce((acc, item) => item.rating + acc, 0) /
-		product.reviews.length;
+	product.ratings = product.reviews.reduce((acc, item) => item.		rating + acc, 0) / product.reviews.length;
 
 	await product.save({ validateBeforeSave: false });
 
 	res.status(200).json({
-		success: true,
+		success: true
 	});
 });
 
@@ -91,7 +91,7 @@ exports.getProductAllReviews = catchAsyncErrors(async (req, res, next) => {
 
 	res.status(200).json({
 		success: true,
-		reviews: product.reviews,
+		reviews: product.reviews
 	});
 });
 
@@ -105,16 +105,14 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
 
 	const numOfReviews = reviews.length;
 
-	const ratings =
-		product.reviews.reduce((acc, item) => item.rating + acc, 0) /
-		reviews.length;
+	const ratings = product.reviews.reduce((acc, item) => item.rating + acc, 0) / reviews.length;
 
 	await Product.findByIdAndUpdate(
 		req.query.productId,
 		{
 			reviews,
 			ratings,
-			numOfReviews,
+			numOfReviews
 		},
 		{
 			new: true,
@@ -134,9 +132,9 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
 exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
 	const products = await Product.find();
 
-	return res.status(200).json({
+	res.status(200).json({
 		success: true,
-		products,
+		products
 	});
 });
 
@@ -152,7 +150,7 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
 	let imagesLinks = [];
 
 	for (let i = 0; i < images.length; ++i) {
-		const result = await cloudinary.v2.uploader.upload(images[i], {
+		await cloudinary.v2.uploader.upload(images[i], {
 			folder: 'shopSmart - product'
 		});
 
@@ -164,7 +162,7 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
 
 	req.body.images = imagesLinks;
 
-	req.body.user = req.body.id;
+	req.body.user = req.user.id;
 
 	const product = await Product.create(req.body);
 
@@ -244,6 +242,6 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 
 	res.status(200).json({
 		success: true,
-		message: 'Product is deleted',
+		message: 'Product is deleted'
 	});
 });
