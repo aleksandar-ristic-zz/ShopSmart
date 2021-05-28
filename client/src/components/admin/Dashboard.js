@@ -8,6 +8,7 @@ import Sidebar from './Sidebar'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAdminProducts } from '../../actions/productActions'
 import { allOrders } from '../../actions/orderActions'
+import { allUsers } from '../../actions/userActions'
 
 
 const Dashboard = () => {
@@ -16,6 +17,7 @@ const Dashboard = () => {
 
   const { loading, products } = useSelector(state => state.products);
   const { orders, totalAmount} = useSelector(state => state.allOrders)
+  const { users } = useSelector(state => state.allUsers)
 
   let outOfStock = 0;
 
@@ -30,6 +32,7 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(getAdminProducts());
     dispatch(allOrders());
+    dispatch(allUsers());
   }, [dispatch])
 
   return (
@@ -84,7 +87,7 @@ const Dashboard = () => {
                 <div className="card-body">
                   <div className="text-center card-font-size">Users
                     <br/> 
-                    <b>45</b>
+                    <b>{users && users.length}</b>
                   </div>
                 </div>
                 <Link className="card-footer text-white clearfix small z-1" to="/admin/users">

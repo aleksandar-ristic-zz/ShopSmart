@@ -109,7 +109,7 @@ const OrdersList = ({ history }) => {
 
         <div className="col-12 col-md-10">
           <>
-            <h1 className="my-5">All products</h1>
+            <h1 className="my-5">All orders</h1>
 
             {loading ? <Loader /> : (
                  <MDBDataTable 
