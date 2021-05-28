@@ -15,7 +15,7 @@ import {
 } from '../../actions/productActions'
 
 import { addItemToCart } from '../../actions/cartActions'
-//import { NEW_REVIEW_RESET } from '../../constants/productConstants'
+import { NEW_REVIEW_RESET } from '../../constants/productConstants'
 
 const ProductDetails = ({ match }) => {
 
@@ -63,7 +63,8 @@ const ProductDetails = ({ match }) => {
     }
 
     if (success) {
-      alert.success('Review posted. Thank you for giving us your opinion');
+      alert.success('Thanks for the opinion.');
+      dispatch({ type: NEW_REVIEW_RESET });
     }
 
   }, [dispatch, alert, error, match.params.id, reviewError, success])
@@ -172,7 +173,7 @@ const ProductDetails = ({ match }) => {
 
       <hr/>
 
-      <p id="product_price">{price}</p>
+      <p id="product_price">$ {price}</p>
       <div className="stockCounter d-inline">
         <span className="btn btn-danger minus" 
         onClick={decreaseQty}>-</span>

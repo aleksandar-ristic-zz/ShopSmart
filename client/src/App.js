@@ -36,7 +36,7 @@ import OrdersList from './components/admin/OrdersList'
 import ProcessOrder from './components/admin/ProcessOrder'
 import UsersList from './components/admin/UsersList'
 import UpdateUser from './components/admin/UpdateUser'
-//import ProductReviews from './components/admin/ProductReviews'
+import ProductReviews from './components/admin/ProductReviews'
 
 
 import ProtectedRoute from './components/route/ProtectedRoute'
@@ -56,13 +56,13 @@ function App() {
   useEffect(() => {
     store.dispatch(loadUser())
 
-    async function getStripApiKey() {
+    async function getStripeApiKey() {
       const { data } = await axios.get('/api/v1/stripeapi');
 
       setStripeApiKey(data.stripeApiKey)
     }
 
-    getStripApiKey();
+    getStripeApiKey();
 
   }, [])
 
@@ -146,18 +146,25 @@ function App() {
 				component={ProcessOrder}
 			/>
 
-				<ProtectedRoute
+			<ProtectedRoute
 				exact
 				path='/admin/users'
 				isAdmin={true}
 				component={UsersList}
 			/>
 
-				<ProtectedRoute
+			<ProtectedRoute
 				exact
 				path='/admin/user/:id'
 				isAdmin={true}
 				component={UpdateUser}
+			/>
+
+			<ProtectedRoute
+				exact
+				path='/admin/reviews'
+				isAdmin={true}
+				component={ProductReviews}
 			/>
 			
 			{!loading && (!isAuth || user.role !== 'admin') && (

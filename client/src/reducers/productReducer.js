@@ -259,7 +259,7 @@ export const productReviewsReducer = (
     }
 }
 
-export const reviewsReducer = (
+export const reviewReducer = (
   state = { reviews: [] }, action) => {
     const { type, payload } = action;
 
@@ -271,7 +271,7 @@ export const reviewsReducer = (
         }
       case DELETE_REVIEW_SUCCESS:
         return {
-         ...state
+         ...state,
          loading: false,
          isDeleted: payload
         }

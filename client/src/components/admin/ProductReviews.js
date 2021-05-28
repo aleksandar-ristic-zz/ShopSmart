@@ -1,65 +1,82 @@
 import React, { useEffect, useState } from 'react'
 import { MDBDataTable } from 'mdbreact'
 
-import Loader from '../layout/Loader'
 import MetaData from '../layout/MetaData'
 import Sidebar from './Sidebar'
 
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getProductReviews, clearErrors} from '../../actions/productActions'
+import { getProductReviews, deleteReview, clearErrors} from '../../actions/productActions'
 
-import { DELETE_REVIEW_RESET } from '../../constants/userConstants'
+import { DELETE_REVIEW_RESET } from '../../constants/productConstants'
 
-import { ImPencil, ImBin } from "react-icons/im"
+import { ImBin } from "react-icons/im"
 
-const ProductReviews = ({ history }) => {
+const ProductReviews = () => {
 
   const [productId, setProductId] = useState('');
 
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { loading, error, users } = useSelector( state => state.allUsers); const { isDeleted } = useSelector(state => state.user);
+  const { error, reviews } = useSelector( state => state.productReviews);
+
+  const {isDeleted, error: deleteError } = useSelector(state => state.review)
 
   useEffect(() => {
-    dispatch(allUsers());
-
+   
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
 
-   if (isDeleted) {
-      alert.success('User has been removed.');
-      history.push('/admin/users');
-      dispatch({ type: DELETE_USER_RESET });
+    if (deleteError) {
+      alert.errror(deleteError);
+      dispatch(clearErrors());
     }
 
-  }, [dispatch, alert, error, history, isDeleted]);
+    if (productId !== '') {
+       dispatch(getProductReviews(productId));
+    }
 
-   const setUsers= () => {
+    if (isDeleted) {
+      alert.success('Review has been removed.');
+      dispatch({ type: DELETE_REVIEW_RESET });
+    }
+
+  }, [dispatch, alert, error, deleteError, isDeleted, productId]);
+
+  const submitHandler = e => {
+    e.preventDefault();
+    dispatch(getProductReviews(productId));
+  }
+
+  const deleteReviewHandler = (id) => {
+    dispatch(deleteReview(id, productId));
+  }
+
+   const setReviews= () => {
     const data = {
       columns: [
         {
-          label: 'User ID',
+          label: 'Review ID',
           field: 'id',
           sort: 'asc'
         },
         {
-          label: 'Name',
-          field: 'name',
+          label: 'Rating',
+          field: 'rating',
           sort: 'asc'
         },
         {
-          label: 'Email',
-          field: 'email',
+          label: 'Comment',
+          field: 'comment',
           sort: 'asc'
         },
         {
-          label: 'Role',
-          field: 'role',
+          label: 'User',
+          field: 'user',
           sort: 'asc'
         },
         {
@@ -70,26 +87,16 @@ const ProductReviews = ({ history }) => {
       rows: []
     }
 
-    users.forEach(user => {
+    reviews.forEach(review => {
       data.rows.push({
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-        .includes('admin') 
-        ? <p style={{ color: '#fa9c23' }}>{user.role}</p> 
-        : <p style={{ color: '#00aaff' }}>{user.role}</p>,
+        id: review._id,
+        rating: review.rating,
+        comment: review.comment,
+        user: review.name,
         actions:
-        <>
-          <Link 
-          to={`/admin/user/${user._id}`} 
-          className="btn btn-warning text-white mr-1" >
-            <ImPencil />
-          </Link>
-          <button className="btn btn-danger" onClick={() => deleteUserHandler(user._id)}>
+          <button className="btn btn-danger" onClick={() => deleteReviewHandler(review._id)}>
             <ImBin />
           </button>
-        </>
       })
     })
 
@@ -97,9 +104,57 @@ const ProductReviews = ({ history }) => {
   }
 
   return (
-    <div>
-      
-    </div>
+    <>
+       <MetaData title={'Product Reviews'} />
+      <div className="row">
+        <div className="col-12 col-md-2">
+          <Sidebar />
+        </div>
+
+        <div className="col-12 col-md-10">
+          <>
+          <div className="row justify-content-center mt-5">
+            <div className="col-5">
+              <form onSubmit={submitHandler}>
+                <div className="form-group">
+                  <label htmlFor="productId_field">Enter Product ID</label>
+                    <input
+                      type="text"
+                      id="email_field"
+                      className="form-control"
+                      value={productId}
+                      onChange={(e) => setProductId(e.target.value)}
+                    />
+                </div>
+
+                <button
+                  id="search_button"
+                  type="submit"
+                  className="btn btn-primary btn-block py-2"
+                >
+                  SEARCH
+                </button>
+              </ form>
+            </div>  
+          </div>
+
+          {reviews && reviews.length > 0 ? (
+            <MDBDataTable 
+              data={setReviews()}
+              className="px-3"
+              bordered
+              striped
+              hover
+            />
+          ) : (
+          <p className="mt-5 text-center lead">
+            No Reviews. Yet.
+          </p>
+          )}
+          </>
+        </div>
+      </div> 
+    </>
   )
 }
 
