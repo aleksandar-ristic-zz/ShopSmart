@@ -274,7 +274,7 @@ export const getUserDetails = (id) => async dispatch => {
   try {
     dispatch({ type: USER_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/v1/admin/user${id}`);
+    const { data } = await axios.get(`/api/v1/admin/user/${id}`);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,

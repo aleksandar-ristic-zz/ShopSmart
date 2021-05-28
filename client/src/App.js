@@ -35,7 +35,7 @@ import UpdateProduct from './components/admin/UpdateProduct'
 import OrdersList from './components/admin/OrdersList'
 import ProcessOrder from './components/admin/ProcessOrder'
 import UsersList from './components/admin/UsersList'
-//import UpdateUser from './components/admin/UpdateUser'
+import UpdateUser from './components/admin/UpdateUser'
 //import ProductReviews from './components/admin/ProductReviews'
 
 
@@ -152,8 +152,14 @@ function App() {
 				isAdmin={true}
 				component={UsersList}
 			/>
-			
 
+				<ProtectedRoute
+				exact
+				path='/admin/user/:id'
+				isAdmin={true}
+				component={UpdateUser}
+			/>
+			
 			{!loading && (!isAuth|| user.role !== 'admin') && (
           <Footer />
         )}
