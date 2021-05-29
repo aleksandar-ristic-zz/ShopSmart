@@ -1,2 +1,8 @@
 node_modules/
-api/config/config.env
+client/node_modules
+
+build/
+client/build
+
+
+client/.env.local
